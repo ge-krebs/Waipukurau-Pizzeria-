@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waipukurau Pizzeria</title>
+</head>
+<body>
+
+    <h1>Waipukurau Pizzeria - BIT608</h1>
+    <h2>Temporary launch page for web application</h2>
+
+    <li><a href="makebooking.html">Make a booking </a></li>
+    <li><a href="editbooking.html">Edit a booking</a></li>
+    <li><a href="viewbooking.html">View a booking</a></li>
+    <li><a href="deletebooking.html">Delete a booking</a></li>
+    <li><a href="listbookings.html">List bookings</a></li>
+    <li><a href="placeorder.html">Place an order</a></li>
+    <li><a href="editorder.html">Edit an  order</a></li>
+    <li><a href="vieworder.html">View an order</a></li>
+    <li><a href="deleteorder.html">Cancel an order</a></li>
+    <li><a href="listorders.html">List orders</a></li>
+
+    
+</body>
+</html>
