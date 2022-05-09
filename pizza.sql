@@ -30,12 +30,21 @@ INSERT INTO `fooditems` (`itemID`,`pizza`,`description`,`pizzatype`,`price`) VAL
 DROP TABLE IF EXISTS orders;
 CREATE TABLE IF NOT EXISTS orders (
 -- to be completed by the student
+orderID int unsigned NOT NULL auto_increment,
+FOREIGN KEY (customerID) REFERENCES customer(customerID)
+pizzaextras varchar(200),
+orderon datetime NOT NULL, 
+PRIMARY KEY (orderID)
 ) AUTO_INCREMENT=1;
 
 -- Fooditems per order 
 DROP TABLE IF EXISTS orderlines;
 CREATE TABLE IF NOT EXISTS orderlines ( 
 -- to be completed by the student
+orderID
+itemID int,
+qty int NOT NULL,
+FOREIGN KEY (itemID) REFERENCES fooditems(itemID)
 );
 
 
@@ -47,7 +56,7 @@ CREATE TABLE IF NOT EXISTS booking (
   telephone varchar(14) NOT NULL,
   bookingdate datetime,
   people int default 1,
-  PRIMARY KEY (bookingID)
+  PRIMARY KEY (bookingID) 
 ) AUTO_INCREMENT=1;
 
 insert into booking (bookingID, customerID, telephone, bookingdate, people) values (1, 1, '592-232-0521', '2021-12-18 17:29:36', 2);

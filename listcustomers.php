@@ -55,6 +55,20 @@ function searchResult(searchstr) {
 </head>
 <body>
 
+<?php
+include "config.php"; //load in any variables
+$DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
+ 
+if (mysqli_connect_errno()) {
+    echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+    exit;
+}
+ 
+$query = 'SELECT customerID,firstname,lastname FROM customer ORDER BY lastname';
+$result = mysqli_query($DBC,$query);
+$rowcount = mysqli_num_rows($result); 
+?>
+
 <h1>Customer List Search by Lastname</h1>
 <h2><a href='addcustomer.php'>[Create new Customer]</a><a href="/pizza/">[Return to main page]</a>
 </h2>
@@ -69,7 +83,21 @@ function searchResult(searchstr) {
 <table id="tblcustomers" border="1">
 <thead><tr><th>Lastname</th><th>Firstname</th><th>actions</th></tr></thead>
 
-
+<?php
+//check if data available and loop through each customer. displays results in table.
+if ($rowcount > 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $customerID = $row['customerID'];
+    echo '<tr><td>'.$row['firstname'].'</td><td>'.$row['lastname'].'</td>';
+    echo     '<td><a href="viewmember.php?id='.$customerID.'">[view]</a>';
+	  echo     '<a href="editmember.php?id='.$customerID.'">[edit]</a>';
+	  echo     '<a href="deletemember.php?id='.$customerID.'">[delete]</a></td>';
+    echo '</tr>'.PHP_EOL;
+  }
+}
+mysqli_free_result($result); 
+mysqli_close($DBC);
+?>
 
 </table>
 </body>

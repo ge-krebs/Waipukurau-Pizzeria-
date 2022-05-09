@@ -51,7 +51,7 @@
                     <input type="number" name="quantity" min="1" max="10">
                 </td>
                 <td>
-                    <input type="submit" class="button" value="Delete" onclick="deletePizza();"/>
+                    <input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/>
                 </td>
             </tr>
         </table>
@@ -82,7 +82,7 @@
             var a = x.insertCell(2);
             y.innerHTML="<select name='pizzatype' id='pizzatype'><option value='none' selected disabled hidden>none</option><option value='pizza1'>Pizza 1 (S) $10</option><option value='pizza2'>Pizza 2 (S) $10</option><option value='pizza3'>Pizza 3 (S) $6</option><option value='pizza4'>Pizza 4 (S) $6</option><option value='pizza5'>Pizza 5 (S) $8</option><option value='pizza6'>Pizza 6 (S) $7</option><option value='pizza7'>Pizza 7 (S) $8</option><option value='pizza8'>Pizza (S) $9</option><option value='pizza9'>Pizza 9 (V) $9</option><option value='pizza10'>Pizza 10 (V) $6</option><option value='pizza11'>Pizza 11 (V) $6</option><option value='pizza12'>Pizza 12 (V) $7</option></select>";
             z.innerHTML="<input type='number' name='pizzaamount' min='1' max='10'>"
-            a.innerHTML += "<button onClick='deletePizza()'>Delete</button>";
+            a.innerHTML += "<button onClick='deletePizza(self)'>Delete</button>";
         };
         function deletePizza(row) 
         {

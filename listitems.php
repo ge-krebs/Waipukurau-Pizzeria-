@@ -19,7 +19,7 @@ $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 <h1>Food item list</h1>
-<h2><a href='additem.php'>[Add a food item]</a><a href="/pizza/">[Return to main page]</a></h2>
+<h2><a href='additem.php'>[Add a food item]</a><a href="index.php">[Return to main page]</a></h2>
 <table border="1">
 <thead><tr><th>Food Item Name</th><th>Type</th><th>Action</th></tr></thead>
 <?php
