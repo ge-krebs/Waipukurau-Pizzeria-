@@ -89,9 +89,9 @@ if ($rowcount > 0) {
   while ($row = mysqli_fetch_assoc($result)) {
     $customerID = $row['customerID'];
     echo '<tr><td>'.$row['firstname'].'</td><td>'.$row['lastname'].'</td>';
-    echo     '<td><a href="viewmember.php?id='.$customerID.'">[view]</a>';
-	  echo     '<a href="editmember.php?id='.$customerID.'">[edit]</a>';
-	  echo     '<a href="deletemember.php?id='.$customerID.'">[delete]</a></td>';
+    echo '<td><a href="viewcustomer.php?id='.$row.'">[view]</a>';
+	  echo '<a href="editcustomer.php?id='.$row.'">[edit]</a>';
+	  echo '<a href="deletecustomer.php?id='.$row.'">[delete]</a></td>';
     echo '</tr>'.PHP_EOL;
   }
 }
