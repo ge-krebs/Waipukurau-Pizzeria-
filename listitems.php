@@ -30,12 +30,14 @@ if ($rowcount > 0) {
 	  $id = $row['itemID'];	
       $pt = $row['pizzatype']=='S'?'Standard':'Vegeterian';
 	  echo '<tr><td>'.$row['pizza'].'</td><td>'.$pt.'</td>';
-	  echo     '<td><a href="viewitem.php?id='.$id.'">[view]</a>';
-	  echo         '<a href="edititem.php?id='.$id.'">[edit]</a>';
-	  echo         '<a href="deleteitem.php?id='.$id.'">[delete]</a></td>';
+	  echo '<td><a href="viewitem.php?id='.$id.'">[view]</a>';
+	  echo '<a href="edititem.php?id='.$id.'">[edit]</a>';
+	  echo '<a href="deleteitem.php?id='.$id.'">[delete]</a></td>';
       echo '</tr>'.PHP_EOL;
    }
-} else echo "<h2>No food items found!</h2>"; //suitable feedback
+} else {
+    echo "<h2>No food items found!</h2>"; //suitable feedback
+}
 
 mysqli_free_result($result); //free any memory used by the query
 mysqli_close($DBC); //close the connection once done

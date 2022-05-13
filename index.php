@@ -11,18 +11,12 @@
     <h1>Waipukurau Pizzeria - BIT608</h1>
     <h2>Temporary launch page for web application</h2>
 
-    <li><a href="makebooking.php">Make a booking </a></li>
-    <li><a href="editbooking.php">Edit a booking</a></li>
-    <li><a href="viewbooking.php">View a booking</a></li>
-    <li><a href="deletebooking.php">Delete a booking</a></li>
-    <li><a href="listbookings.php">List bookings</a></li>
-    <li><a href="placeorder.php">Place an order</a></li>
-    <li><a href="editorder.php">Edit an  order</a></li>
-    <li><a href="vieworder.php">View an order</a></li>
-    <li><a href="deleteorder.php">Cancel an order</a></li>
-    <li><a href="listorders.php">List orders</a></li>
-    <li><a href="listcustomers.php">List Customers</a></li>
-    <li><a href="listitems.php">List items</a></li>
+    <li><a href="listcustomers.php">Customer listing </a></li>
+    <li><a href="listbookings.php">Bookings listing</a></li>
+    <li><a href="listorders.php">Orders listing</a></li>
+    <li><a href="list items.php">Items listing</a></li>
+    <li><a href="placeorder.php">Place order</a></li>
+
     <li><a href="testfile.php">Test select function</a></li>
 
     
