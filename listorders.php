@@ -18,7 +18,7 @@
 </head>
 <body>
     <h1>Current Orders</h1>
-    <h2><a href="placeorder.html">[Place an order]</a><a href="index.html">[Return to main page]</a></h2>
+    <h2><a href="placeorder.php">[Place an order]</a><a href="index.php">[Return to main page]</a></h2>
 
     <table>
         <tr>

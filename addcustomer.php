@@ -88,11 +88,11 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 <form method="POST" action="addcustomer.php">
   <p>
     <label for="firstname">Name: </label>
-    <input type="text" id="firstname" name="firstname" minlength="5" maxlength="50" required> 
+    <input type="text" id="firstname" name="firstname" minlength="3" maxlength="50" required> 
   </p> 
   <p>
     <label for="lastname">Last Name: </label>
-    <input type="text" id="lastname" name="lastname" minlength="5" maxlength="50" required> 
+    <input type="text" id="lastname" name="lastname" minlength="3" maxlength="50" required> 
   </p>  
   <p>  
     <label for="email">Email: </label>

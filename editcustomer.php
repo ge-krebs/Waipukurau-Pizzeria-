@@ -39,18 +39,46 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
        $msg .= 'Invalid Customer ID '; //append error message
        $id = 0;  
     }   
-//firstname
-       $firstname = cleanInput($_POST['firstname']); 
-//lastname
-       $lastname = cleanInput($_POST['lastname']);        
-//email
-       $email = cleanInput($_POST['email']);         
+    //firstname ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***
+    $error = 0; //clear our error flag
+    $msg = 'Error: ';
+    if (isset($_POST['firstname']) and !empty($_POST['firstname']) and is_string($_POST['firstname'])) {
+      $fn = cleanInput($_POST['firstname']); 
+      $firstname = (strlen($fn)>50)?substr($fn,1,50):$fn; //check length and clip if too big
+      //we would also do context checking here for contents, etc       
+    } else {
+      $error++; //bump the error flag
+      $msg .= 'Invalid firstname '; //append eror message
+      $firstname = '';  
+    } 
+    //lastname ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***
+    if (isset($_POST['lastname']) and!empty($_POST['lastname']) and is_string($_POST['lastname'])) {
+      $ln = cleanInput($_POST['lastname']);  
+
+      $lastname = (strlen($ln)>50)?substr($ln,1,50):$ln;
+    } else {
+        $error++;
+      $msg .= 'Invalid lastname ';
+      $lastname = '';
+    }
+            
+    //email ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***
+    if (isset($_POST['email']) and !empty($_POST['email']) and is_string($_POST['email'])) {
+      $em = cleanInput($_POST['email']); 
+
+      $email = cleanInput(strlen($em) > 50)?substr($em,1,50):$em;
+
+    } else {
+      $error++; //bump the error flag
+      $msg .= 'Invalid email '; //append error message
+      $email = '';
+    }                     
     
 //save the customer data if the error flag is still clear and customer id is > 0
     if ($error == 0 and $id > 0) {
         $query = "UPDATE customer SET firstname=?,lastname=?,email=? WHERE customerID=?";
         $stmt = mysqli_prepare($DBC,$query); //prepare the query
-        mysqli_stmt_bind_param($stmt,'ssssi', $firstname, $lastname, $email,$username,$id); 
+        mysqli_stmt_bind_param($stmt,'sssi', $firstname, $lastname, $email,$id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);    
         echo "<h2>customer details updated.</h2>";     
@@ -68,7 +96,7 @@ if ($rowcount > 0) {
   $row = mysqli_fetch_assoc($result);
 ?>
 <h1>Customer Details Update</h1>
-<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 
 <form method="POST" action="editcustomer.php">
   <input type="hidden" name="id" value="<?php echo $id;?>">

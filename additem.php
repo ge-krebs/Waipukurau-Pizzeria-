@@ -58,6 +58,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     if (isset($_POST['price']) and !empty($_POST['price']) and is_float($_POST['price'])) { //must have decimal
        $price = cleanInput($_POST['price']);  
        if ($price < 5 or $price > 50 ) $price = 5;
+       //ADD 
     } else {
        $error++; //bump the error flag
        $msg .= 'Invalid pizza price '; //append eror message
@@ -79,7 +80,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 }
 ?>
 <h1>Add a new food item</h1>
-<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 
 <form method="POST" action="additem.php">
   <p>
@@ -93,7 +94,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
   <p>  
     <label for="pizzatype">Pizza type: </label>
     <input type="radio" id="pizzatype" name="pizzatype" value="S" checked> Standard 
-    <input type="radio" id="pizzatype" name="pizzatype" value="V"> Vegitarian 
+    <input type="radio" id="pizzatype" name="pizzatype" value="V"> Vegetarian 
    </p>     
   <p>
     <label for="price">Price $(5.0 to 50.0): </label>

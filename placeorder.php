@@ -20,7 +20,7 @@
 <body>
     <!--Pizza data/orders have been assumed based on the assignment brief-->
     <h1>Place an order</h1>
-    <h2><a href="listorders.html">[Return to the Orders listing]</a><a href="index.html">[Return to the main page]</a></h2>
+    <h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
     <h3>Pizza order for customer test</h3>
     <form action="">
         <label for="ordertime">Order for (date & time):</label>

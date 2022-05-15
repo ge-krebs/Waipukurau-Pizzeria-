@@ -14,9 +14,9 @@
     <li><a href="listcustomers.php">Customer listing </a></li>
     <li><a href="listbookings.php">Bookings listing</a></li>
     <li><a href="listorders.php">Orders listing</a></li>
-    <li><a href="list items.php">Items listing</a></li>
+    <li><a href="listitems.php">Items listing</a></li>
     <li><a href="placeorder.php">Place order</a></li>
-
+    <li><a href="makebooking.php">Make booking</a></li>
     <li><a href="testfile.php">Test select function</a></li>
 
     

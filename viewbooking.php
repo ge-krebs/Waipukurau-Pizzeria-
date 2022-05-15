@@ -7,23 +7,42 @@
     <title>Waipukurau Pizzeria - View booking</title>
 </head>
 <body>
-    <!--Data is assumed for bookingdate, firstname, lastname, people & telephone based on assignment brief, p tags have been used-->
-    <h1>Booking details view</h1>
-    <h2><a href="listbookings.html">[Return to the booking listing]</a><a href="index.html">[Return to the main menu]</a></h2>
+<?php
+include "config.php"; //load in any variables
+$DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
-    <form action="">
-    <fieldset>
-        <legend>Booking detail #1</legend><br>
-        <label for="bookingdate">Booking date & time:</label>
-        <p style="margin-left: 20px;">2021-12-18 17:29:36</p> 
-        <label for="firstname, lastname">Customer name:</label>
-        <p style="margin-left: 20px;">Admin, Admin</p>
-        <label for="people">Party size:</label>
-        <p style="margin-left: 20px;">2</p>
-        <label for="telephone">Contact number:</label>
-        <p style="margin-left: 20px;">592-232-0521</p>
-    </fieldset>
-    </form>
+//insert DB code from here onwards
+//check if the connection was good
+if (mysqli_connect_errno()) {
+    echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+    exit; //stop processing the page further
+}
 
+//do some simple validation to check if id exists
+$id = $_GET['id'];
+if (empty($id) or !is_numeric($id)) {
+ echo "<h2>Invalid Booking ID</h2>"; //simple error feedback
+ exit;
+} 
+
+//preparing a query to be sent to server
+$query = 'SELECT * FROM booking WHERE bookingID='.$id;
+$result = mysqli_query($DBC,$query);
+$rowcount = mysqli_num_rows($result); 
+?>
+
+<h1>Booking details view</h1>
+<h2><a href="listbookings.php">[Return to the booking listing]</a><a href="index.php">[Return to the main menu]</a></h2>
+
+<?php
+
+//makes sure we have the customer
+if ($rowcount > 0) {
+    echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
+    $row = mysqli_fetch_assoc($result);
+    echo "<dt>"
+}
+
+?>
 </body>
 </html>

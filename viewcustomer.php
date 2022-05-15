@@ -28,12 +28,12 @@ $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 <h1>Customer Details View</h1>
-<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 <?php
 
 //makes sure we have the customer
 if ($rowcount > 0) {  
-   echo "<fieldset><legend>customer detail #$id</legend><dl>"; 
+   echo "<fieldset><legend>Customer Detail #$id</legend><dl>"; 
    $row = mysqli_fetch_assoc($result);
    echo "<dt>Name:</dt><dd>".$row['firstname']."</dd>".PHP_EOL;
    echo "<dt>Lastname:</dt><dd>".$row['lastname']."</dd>".PHP_EOL;

@@ -28,7 +28,7 @@ $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 <h1>Food item Details View</h1>
-<h2><a href='listitems.php'>[Return to the Food item listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listitems.php'>[Return to the Food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 <?php
 
 //makes sure we have the Food Item

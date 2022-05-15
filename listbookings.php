@@ -40,9 +40,12 @@
     <?php
         if ($rowcount > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $bookingid = $row['bookingID'];
-                echo '<tr><td>'.$row['bookingdate'].$row['people'].'</td><td>'.$row['telephone'].'</td>';
-                // echo '<td><a href="viewbooking.php?='.$bookingID'">[view]</a></td>';
+                $id = $row['bookingID'];
+                echo '<tr><td>'.$row['bookingdate'].' ('.$row['people'].')'.'</td><td>'.$row['telephone'].'</td>';
+                echo '<td><a href="viewbooking.php?id='.$id.'">[view]</a>';
+                echo '<a href="editbooking.php?=id'.$id.'">[edit]</a>';
+                echo '<a href="deletebooking.php?=id'.$id.'">[delete]</a></td>';
+                echo '</tr>'.PHP_EOL;
             }
         }    
     mysqli_free_result($result); 

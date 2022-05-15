@@ -37,6 +37,8 @@ orderon datetime NOT NULL,
 PRIMARY KEY (orderID)
 ) AUTO_INCREMENT=1;
 
+--Inserting some dummy orders for the system 
+
 -- Fooditems per order 
 DROP TABLE IF EXISTS orderlines;
 CREATE TABLE IF NOT EXISTS orderlines ( 
