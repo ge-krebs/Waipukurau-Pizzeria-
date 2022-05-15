@@ -1,3 +1,9 @@
+<?php
+include "checksession.php";
+checkUser();
+loginStatus(); 
+?>
+
 <!DOCTYPE HTML>
 <html><head><title>Browse food items</title> </head>
  <body>

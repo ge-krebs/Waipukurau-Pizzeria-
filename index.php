@@ -17,6 +17,8 @@
     <li><a href="listitems.php">Items listing</a></li>
     <li><a href="placeorder.php">Place order</a></li>
     <li><a href="makebooking.php">Make booking</a></li>
+    <li><a href="login.php">Login</a></li>
+    <li><a href="privacy.php">Privacy Statement</a></li>
     <li><a href="testfile.php">Test select function</a></li>
 
     

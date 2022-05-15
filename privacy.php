@@ -1,5 +1,5 @@
 <?php
-include "header.php";
+//include "header.php";
 ?>
 
     <!--Please note I have rearranged some sections from the about page to include the policy within the body/article div and not the footer-->
@@ -7,6 +7,7 @@ include "header.php";
         <div class="header">
             <div>
                 <h1>Privacy Policy</h1>
+                <h2><a href="index.php">[Return to home page]</a></h2>
 				<p>If you have concerns or questions about our privacy policy please get in touch</p>
             </div>
         </div>
@@ -28,5 +29,5 @@ include "header.php";
 
 
 <?php
-include "footer.php";
+//include "footer.php";
 ?>

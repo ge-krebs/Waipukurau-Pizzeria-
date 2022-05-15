@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1>Make a booking</h1>
-    <h2><a href="listbookings.html">[Return to the Bookings listing]</a><a href="index.html">[Return to the main page]</a></h2>
+    <h2><a href="listbookings.php">[Return to the Bookings listing]</a><a href="index.php">[Return to the main page]</a></h2>
     <h2>Booking for Test</h2>
 
     <form>

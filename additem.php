@@ -1,4 +1,10 @@
- <!DOCTYPE HTML>
+<?php
+include "checksession.php";
+checkUser();
+loginStatus(); 
+?>
+
+<!DOCTYPE HTML>
 <html><head><title>Add a New Food Item</title> </head>
  <body>
 
