@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
@@ -53,7 +52,6 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 //email ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***
     if (isset($_POST['email']) and !empty($_POST['email']) and is_string($_POST['email'])) {
       $em = cleanInput($_POST['email']); 
-
       $email = cleanInput(strlen($em) > 50)?substr($em,1,50):$em;
 
     } else {

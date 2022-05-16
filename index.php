@@ -1,3 +1,8 @@
+<?php
+include "checksession.php";
+loginStatus();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

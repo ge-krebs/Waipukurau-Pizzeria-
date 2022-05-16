@@ -1,18 +1,16 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
 <html><head><title>View Customer</title> </head>
- <body>
+<body>
 
 <?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
-//insert DB code from here onwards
 //check if the connection was good
 if (mysqli_connect_errno()) {
     echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;

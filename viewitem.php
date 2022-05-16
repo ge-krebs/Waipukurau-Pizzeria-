@@ -1,18 +1,16 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
 <html><head><title>View Food items</title> </head>
- <body>
+<body>
 
 <?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
-//insert DB code from here onwards
 //check if the connection was good
 if (mysqli_connect_errno()) {
     echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
@@ -29,8 +27,8 @@ if (empty($id) or !is_numeric($id)) {
 //prepare a query and send it to the server
 //NOTE for simplicity purposes ONLY we are not using prepared queries
 //make sure you ALWAYS use prepared queries when creating custom SQL like below
-$query = 'SELECT * FROM items WHERE itemid='.$id;
-$result = mysqli_query($DBC,$query);
+$query = 'SELECT * FROM fooditems WHERE itemid='.$id;
+$result = mysqli_query($DBC, $query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 <h1>Food item Details View</h1>

@@ -1,5 +1,18 @@
 <?php
 session_start();
+
+//overrides for development purposes only - comment this out when testing the login
+// $_SESSION['loggedin'] = 0;     
+// $_SESSION['userid'] = 1; //this is the ID for the admin user  
+// $_SESSION['username'] = 'Test';
+//end of overrides
+
+function isAdmin() {
+  if (($_SESSION['loggedin'] == 1) and ($_SESSION['userid'] == 1)) 
+      return TRUE;
+  else 
+      return FALSE;
+ }
  
 //function to check if the user is logged else send to the login page 
 function checkUser() {
@@ -8,37 +21,38 @@ function checkUser() {
        return TRUE;
     else {
        $_SESSION['URI'] = 'http://localhost'.$_SERVER['REQUEST_URI']; //save current url for redirect     
-       header('Location: http://localhost/Waipukurau-Pizzeria-BIT608/login.php', true, 303);       
+       header('Location: http://localhost/Waipukurau-Pizzeria-BIT608/login.php', true, 303); //redirects user to login page if not logged in
     }       
 }
  
-//just to show we are logged in
+//checks login status and shows user message
 function loginStatus() {
-    $un = $_SESSION['email']; //This line is causing error....
+    $un = $_SESSION['email'];
     if ($_SESSION['loggedin'] == 1)     
         echo "<h2>Logged in as $un</h2>";
     else
-        echo "<h2>Logged out</h2>";            
+        echo "<h2>Logged out</h2>";
+        $_SESSION['email'] = '';         
 }
  
 //log a user in
 function login($id,$email) {
-   //simple redirect if a user tries to access a page they have not logged in to
+   //Redirect user 
    if ($_SESSION['loggedin'] == 0 and !empty($_SESSION['URI']))        
         $uri = $_SESSION['URI'];          
    else { 
-     $_SESSION['URI'] =  'http://localhost/Waipukurau-Pizzeria-BIT608/index.php';         
+     $_SESSION['URI'] =  'http://localhost/Waipukurau-Pizzeria-BIT608/listcustomers.php'; //redirects user to customer listing once logged in        
      $uri = $_SESSION['URI'];           
    }  
    
    $_SESSION['loggedin'] = 1;        
    $_SESSION['userid'] = $id;   
-   $_SESSION['email'] = $username; 
+   $_SESSION['email'] = $email; 
    $_SESSION['URI'] = ''; 
    header('Location: '.$uri, true, 303);        
 }
  
-//simple logout function
+//Logout function
 function logout(){
   $_SESSION['loggedin'] = 0;
   $_SESSION['userid'] = -1;        

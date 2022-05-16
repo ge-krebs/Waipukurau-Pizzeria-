@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE html>
@@ -54,10 +53,10 @@ loginStatus();
                         </select>
                 </td>
                 <td>
-                    <input type="number" name="quantity" min="1" max="10">
+                    <input type="number" name="qty" min="1" max="10">
                 </td>
                 <td>
-                    <input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/>
+                    <input type="submit" class="button" value="Delete" onclick="deletePizza();"/>
                 </td>
             </tr>
         </table>
@@ -92,7 +91,7 @@ loginStatus();
         };
         function deletePizza(row) 
         {
-            var i = row.parentNode.parentNode.rowIndex;
+            var i = row.parentNode.row.parentNode.rowIndex;
             document.getElementById('pizzaTable').deletePizza(i);
         };
     </script>

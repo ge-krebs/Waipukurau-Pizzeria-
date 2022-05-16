@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
@@ -60,7 +59,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
        $msg .= 'Invalid pizza type  '; //append eror message
        $pizzatype = '';  
     }     
-//price    
+    //price    
     if (isset($_POST['price']) and !empty($_POST['price']) and is_float($_POST['price'])) { //must have decimal
        $price = cleanInput($_POST['price']);  
        if ($price < 5 or $price > 50 ) $price = 5;
@@ -75,7 +74,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     if ($error == 0) {
         $query = "INSERT INTO fooditems (pizza,description,pizzatype,price) VALUES (?,?,?,?)";
         $stmt = mysqli_prepare($DBC,$query); //prepare the query
-        mysqli_stmt_bind_param($stmt,'sssd', $pizza, $description, $pizzatype,$price); 
+        mysqli_stmt_bind_param($stmt,'sssd', $pizza, $description, $pizzatype, $price); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);    
         echo "<h2>New food item added to the list</h2>";        

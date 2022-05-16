@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
@@ -54,7 +53,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
         mysqli_stmt_bind_param($stmt,'i', $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);    
-        echo "<h2>Customer details deleted.</h2>";     
+        echo "<h2>Customer details deleted.</h2>"; 
         
     } else { 
       echo "<h2>$msg</h2>".PHP_EOL;

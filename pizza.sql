@@ -29,25 +29,22 @@ INSERT INTO `fooditems` (`itemID`,`pizza`,`description`,`pizzatype`,`price`) VAL
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE IF NOT EXISTS orders (
--- to be completed by the student
 orderID int unsigned NOT NULL auto_increment,
-FOREIGN KEY (customerID) REFERENCES customer(customerID)
+customerID int unsigned NOT NULL,
 pizzaextras varchar(200),
 orderon datetime NOT NULL, 
-PRIMARY KEY (orderID)
+PRIMARY KEY (orderID),
+FOREIGN KEY (customerID) REFERENCES customer(customerID)
 ) AUTO_INCREMENT=1;
-
---Inserting some dummy orders for the system 
 
 -- Fooditems per order 
 DROP TABLE IF EXISTS orderlines;
 CREATE TABLE IF NOT EXISTS orderlines ( 
--- to be completed by the student
-orderID
-itemID int,
+orderID int unsigned NOT NULL,
+itemID int unsigned NOT NULL,
 qty int NOT NULL,
 FOREIGN KEY (itemID) REFERENCES fooditems(itemID)
-);
+); AUTO_INCREMENT=1;
 
 
 -- Bookings for the resturaunt

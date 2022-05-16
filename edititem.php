@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
-checkUser();
-loginStatus(); 
+checkUser(); 
 ?>
 
 <!DOCTYPE HTML>
@@ -33,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 //the data was sent using a formtherefore we use the $_POST instead of $_GET
 //check if we are saving data first by checking if the submit button exists in the array
 if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] == 'Update')) {     
-//validate incoming data - only the first field is done for you in this example - rest is up to you do
     
 //refer to additems for extend validation examples
 //itemID (sent via a form it is a string not a number so we try a type conversion!)    
@@ -45,7 +43,14 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
        $id = 0;  
     }   
 //pizza
-       $pizza = cleanInput($_POST['pizza']); 
+    if (isset($_POST['pizza']) and !empty($_POST['pizza']) and is_string($_POST['pizza'])) {
+      $fn = cleanInput($_POST['pizza']); 
+      $pizza = (strlen($fn)>15)?substr($fn,1,15):$fn;
+    } else {
+      $error++; //bump the error flag
+      $msg .= 'Invalid pizza  '; //append eror message
+      $pizza = '';  
+    } 
 //description
        $description = cleanInput($_POST['description']);        
 //pizzatype
@@ -68,7 +73,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 }
 //locate the food item to edit by using the itemID
 //we also include the item ID in our form for sending it back for saving the data
-$query = 'SELECT itemID,pizza,description,pizzatype,price FROM items WHERE itemid='.$id;
+$query = 'SELECT itemID,pizza,description,pizzatype,price FROM items WHERE itemID='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result);
 if ($rowcount > 0) {

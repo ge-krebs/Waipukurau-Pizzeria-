@@ -1,7 +1,6 @@
 <?php
 include "checksession.php";
 checkUser();
-loginStatus(); 
 ?>
 
 <!DOCTYPE HTML>
@@ -93,11 +92,11 @@ $rowcount = mysqli_num_rows($result);
 //check if data available and loop through each customer. displays results in table.
 if ($rowcount > 0) {
   while ($row = mysqli_fetch_assoc($result)) {
-    $customerID = $row['customerID'];
+    $id = $row['customerID'];
     echo '<tr><td>'.$row['firstname'].'</td><td>'.$row['lastname'].'</td>';
-    echo '<td><a href="viewcustomer.php?id='.$customerID.'">[view]</a>';
-	  echo '<a href="editcustomer.php?id='.$customerID.'">[edit]</a>';
-	  echo '<a href="deletecustomer.php?id='.$customerID.'">[delete]</a></td>';
+    echo '<td><a href="viewcustomer.php?id='.$id.'">[view]</a>';
+	  echo '<a href="editcustomer.php?id='.$id.'">[edit]</a>';
+	  echo '<a href="deletecustomer.php?id='.$id.'">[delete]</a></td>';
     echo '</tr>'.PHP_EOL;
   }
 }

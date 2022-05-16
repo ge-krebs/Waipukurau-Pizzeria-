@@ -1,10 +1,12 @@
 <?php
-//this line is for debugging purposes so that we can see the actual POST data
-echo "<pre>"; var_dump($_POST); echo "</pre>";
+//For debugging purposes, shows POST data, has been commented out as not in use
+//echo "<pre>"; var_dump($_POST); echo "</pre>";
  
 include "checksession.php";
 loginStatus(); //show the current login status
-echo "<pre>"; var_dump($_SESSION); echo "</pre>";
+
+//For debugging purposes, shows array of session, has been commented out
+//echo "<pre>"; var_dump($_SESSION); echo "</pre>";
  
 //simple logout
 if (isset($_POST['logout'])) logout();
@@ -22,7 +24,7 @@ if (isset($_POST['login']) and !empty($_POST['login']) and ($_POST['login'] == '
        $username = (strlen($un)>32)?substr($un,1,32):$un; //check length and clip if too big       
     } else {
        $error++; //bump the error flag
-       $msg .= 'Invalid username/email '; //append error message
+       $msg .= 'Invalid email '; //append error message
        $username = '';  
     } 
                     
@@ -46,9 +48,9 @@ if (isset($_POST['login']) and !empty($_POST['login']) and ($_POST['login'] == '
   //this line would be added to the registermember.php to make a password hash before storing it
   //$hash = password_hash($password); 
   //this line would be used if our user password was stored as a hashed password
-           //if (password_verify($password, $row['password'])) {           
-            if ($password === $row['password']) //using plaintext for demonstration only!            
-              login($row['customerID'],$username);
+  //if (password_verify($password, $row['password'])) {           
+    if ($password === $row['password']) //using plaintext for demonstration only!            
+        login($row['customerID'],$username);
         } echo "<h2>Login fail</h2>".PHP_EOL;   
     } else { 
       echo "<h2>$msg</h2>".PHP_EOL;
