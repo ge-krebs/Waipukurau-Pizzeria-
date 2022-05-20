@@ -19,78 +19,49 @@ checkUser();
             border: 0.5px solid black;
         }
     </style>
-    <!--Information from data table is assumed by assignment brief-->
 </head>
 <body>
-    <h1>Current Orders</h1>
-    <h2><a href="placeorder.php">[Place an order]</a><a href="index.php">[Return to main page]</a></h2>
 
-    <table>
-        <tr>
-            <th>Orders (Date of order, Order number)</th>
-            <th>Customer</th>
-            <th>Action</th>
-        </tr>
-        <tr>
-            <td>2021-02-13 07:10:15 (9)</td>
-            <td>Sellers, Beverly</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-02-18 11:26:59 (11)</td>
-            <td>Kinney, Glenna</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-03-16 14:37:53 (12)</td>
-            <td>Kinney, Glenna</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-04-09 09:31:02 (10)</td>
-            <td>Sellers, Beverly</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-05-20 00:35:30 (06)</td>
-            <td>Walker, Irene</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-07-02 13:47:08 (5)</td>
-            <td>Walker, Irene</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-07-12 12:26:30 (8)</td>
-            <td>Bladwin, Forrest</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-07-16 12:26:42 (2)</td>
-            <td>Admin, Admin</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-10-30 00:14:54 (4)</td>
-            <td>Collier, Desiree</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-11-24 05:46:10 (7)</td>
-            <td>Baldwin, Forrest</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2021-11-29 18:15:12 (1)</td>
-            <td>Collier, Desiree</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-        <tr>
-            <td>2022-01-05 09:07:27 (3)</td>
-            <td>Admin, Admin</td>
-            <td><a href="vieworder.html">[view]</a><a href="editorder.html">[edit]</a><a href="deleteorder.html">[delete]</a></td>
-        </tr>
-    </table>
+<?php
+include "config.php"; //load in any variables
+$DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
+
+//insert DB code from here onwards
+//check if the connection was good
+if (mysqli_connect_errno()) {
+    echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+    exit; //stop processing the page further
+}
+
+//Prepare query to send to server
+$query = 'SELECT orderID,firstname,lastname,orderon FROM orders, customer WHERE orders.customerID = customer.customerID';
+$result = mysqli_query($DBC,$query);
+$rowcount = mysqli_num_rows($result);
+
+?>
+<h1>Current Orders</h1>
+<h2><a href="placeorder.php">[Place an order]</a><a href="index.php">[Return to main page]</a></h2>
+<table border="1">
+<thead><th>Orders (Date of order, Order number)</th><th>Customer</th><th>Actions</th></tr></thead>
+
+<?php
+
+//Make sure there are orders/diplay results
+if ($rowcount > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id = $row['orderID'];
+        echo '<tr><td>'.$row['orderon'].' ('.$row['orderID'].')'.'</td>';
+        echo '<td>'.$row['lastname'].', '.$row['firstname'].'</td>';
+        echo '<td><a href="vieworder.php?id='.$id.'">[view]</a>';
+        echo '<a href="editorder.php?id='.$id.'">[edit]</a>';
+        echo '<a href="deleteorder.php?id='.$id.'">[delete]</a></td>';
+        echo '</tr>'.PHP_EOL;
+    }
+} else {
+    echo "<h2>No orders found!</h2>";
+}
+mysqli_free_result($result); //free memory
+mysqli_close($DBC); //close connection once done
+?>
 </body>
 </html>

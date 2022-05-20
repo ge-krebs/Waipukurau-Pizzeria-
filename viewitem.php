@@ -22,7 +22,7 @@ $id = $_GET['id'];
 if (empty($id) or !is_numeric($id)) {
  echo "<h2>Invalid Food item ID</h2>"; //simple error feedback
  exit;
-} 
+} ;
 
 //prepare a query and send it to the server
 //NOTE for simplicity purposes ONLY we are not using prepared queries

@@ -37,6 +37,10 @@ PRIMARY KEY (orderID),
 FOREIGN KEY (customerID) REFERENCES customer(customerID)
 ) AUTO_INCREMENT=1;
 
+--Inserting some data to test (one order)
+INSERT INTO orders (orderID,customerID,pizzaextras, orderon) VALUES (1, 1, "Cheese", '2021-12-18 17:29:36');
+INSERT INTO orders (orderID,customerID,pizzaextras, orderon) VALUES (2, 1, "Extra jalapenos", '2021-12-18 17:29:36');
+
 -- Fooditems per order 
 DROP TABLE IF EXISTS orderlines;
 CREATE TABLE IF NOT EXISTS orderlines ( 
@@ -46,6 +50,9 @@ qty int NOT NULL,
 FOREIGN KEY (itemID) REFERENCES fooditems(itemID)
 ); AUTO_INCREMENT=1;
 
+--Inserting some data to test (one order)
+INSERT INTO orderlines (orderID,itemID,qty) VALUES (1,1,3);
+INSERT INTO orderlines (orderID,itemID,qty) VALUES (2,7,2);
 
 -- Bookings for the resturaunt
 DROP TABLE IF EXISTS booking;

@@ -23,17 +23,35 @@ checkUser();
 
 </head>
 <body>
-    <!--Pizza data/orders have been assumed based on the assignment brief-->
-    <h1>Place an order</h1>
-    <h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
-    <h3>Pizza order for customer test</h3>
-    <form action="">
-        <label for="ordertime">Order for (date & time):</label>
-        <input type="datetime-local" name="ordertime" id="ordertime" required><br><br>
-        <label for="extras">Extras:</label>
-        <input type="text" name="extras" max="200">
-        <h4>Pizzas for this order:</h4>
-        <table id="pizzaTable">
+
+<?php
+include "config.php"; //load in any variables
+$DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
+
+//insert DB code from here onwards
+//check if the connection was good
+if (mysqli_connect_errno()) {
+    echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+    exit; //stop processing the page further
+}
+
+?>
+
+<h1>Place an order</h1>
+<h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
+<h3>Pizza order</h3>
+
+<form method="POST" action="placeorder.php">
+<p>
+    <label for="orderon">Order for (date & time):</label>
+    <input type="datetime-local" name="ordertime" id="ordertime" required>
+</p>
+<p>
+    <label for="extras">Extras:</label>
+    <input type="text" name="extras" max="200">
+</p>
+    <h4>Pizzas for this order:</h4>
+    <table id="pizzaTable">
             <tr>
                 <td>
                     <select name="pizzatype" id="pizzatype">
@@ -55,9 +73,7 @@ checkUser();
                 <td>
                     <input type="number" name="qty" min="1" max="10">
                 </td>
-                <td>
-                    <input type="submit" class="button" value="Delete" onclick="deletePizza();"/>
-                </td>
+                <td><input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/></td>
             </tr>
         </table>
         <br>
@@ -65,8 +81,7 @@ checkUser();
         <input type="button" class="button" id="addItem" value="Add Item" onclick="addPizza()"><br><br>
         
         <input type="submit" value="Place Order" name="placeorder" id="placeorder"><a href="test.html">[Cancel]</a>
-
-    </form>
+</form>
 
     <!--JavaScript for datetime picker (flatpickr)-->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -88,6 +103,7 @@ checkUser();
             y.innerHTML="<select name='pizzatype' id='pizzatype'><option value='none' selected disabled hidden>none</option><option value='pizza1'>Pizza 1 (S) $10</option><option value='pizza2'>Pizza 2 (S) $10</option><option value='pizza3'>Pizza 3 (S) $6</option><option value='pizza4'>Pizza 4 (S) $6</option><option value='pizza5'>Pizza 5 (S) $8</option><option value='pizza6'>Pizza 6 (S) $7</option><option value='pizza7'>Pizza 7 (S) $8</option><option value='pizza8'>Pizza (S) $9</option><option value='pizza9'>Pizza 9 (V) $9</option><option value='pizza10'>Pizza 10 (V) $6</option><option value='pizza11'>Pizza 11 (V) $6</option><option value='pizza12'>Pizza 12 (V) $7</option></select>";
             z.innerHTML="<input type='number' name='pizzaamount' min='1' max='10'>"
             a.innerHTML += "<button onClick='deletePizza(self)'>Delete</button>";
+            //"<td><input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/></td>"
         };
         function deletePizza(row) 
         {

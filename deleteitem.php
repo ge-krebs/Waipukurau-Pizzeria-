@@ -48,7 +48,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     
 //save the food item data if the error flag is still clear and food item id is > 0
     if ($error == 0 and $id > 0) {
-        $query = "DELETE FROM items WHERE itemID=?";
+        $query = "DELETE FROM fooditems WHERE itemID=?";
         $stmt = mysqli_prepare($DBC,$query); //prepare the query
         mysqli_stmt_bind_param($stmt,'i', $id); 
         mysqli_stmt_execute($stmt);
@@ -63,12 +63,12 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 //prepare a query and send it to the server
 //NOTE for simplicity purposes ONLY we are not using prepared queries
 //make sure you ALWAYS use prepared queries when creating custom SQL like below
-$query = 'SELECT * FROM items WHERE itemID='.$id;
+$query = 'SELECT * FROM fooditems WHERE itemID='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 <h1>Food item details preview before deletion</h1>
-<h2><a href='listitems.php'>[Return to the Food item listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listitems.php'>[Return to the Food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 <?php
 
 //makes sure we have the food item
@@ -82,7 +82,7 @@ if ($rowcount > 0) {
     echo "<dt>Price:</dt><dd>".$row['price']."</dd>".PHP_EOL; 
     echo '</dl></fieldset>'.PHP_EOL;  
    ?><form method="POST" action="deleteitem.php">
-     <h2>Are you sure you want to delete this Food ttem?</h2>
+     <h2>Are you sure you want to delete this Food item?</h2>
      <input type="hidden" name="id" value="<?php echo $id; ?>">
      <input type="submit" name="submit" value="Delete">
      <a href="listitems.php">[Cancel]</a>

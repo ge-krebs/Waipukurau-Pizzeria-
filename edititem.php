@@ -73,7 +73,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 }
 //locate the food item to edit by using the itemID
 //we also include the item ID in our form for sending it back for saving the data
-$query = 'SELECT itemID,pizza,description,pizzatype,price FROM items WHERE itemID='.$id;
+$query = 'SELECT itemID,pizza,description,pizzatype,price FROM fooditems WHERE itemID='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result);
 if ($rowcount > 0) {
@@ -81,7 +81,7 @@ if ($rowcount > 0) {
 
 ?>
 <h1>Food item Details Update</h1>
-<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='/pizza/'>[Return to the main page]</a></h2>
+<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
 
 <form method="POST" action="edititem.php">
   <input type="hidden" name="id" value="<?php echo $id;?>">
