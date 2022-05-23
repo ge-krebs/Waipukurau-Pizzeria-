@@ -47,14 +47,19 @@ $rowcount = mysqli_num_rows($result);
 <?php
 //make sure there are orders
 if ($rowcount > 0) {
-    echo "<fieldset><legend>Order details #$id</legend><dl>";
     $row = mysqli_fetch_assoc($result);
+    echo "<fieldset><legend>Order details #$id</legend><dl>";
     echo "<dt>Date & time ordered for</dt><dd>".$row['orderon']."</dd>".PHP_EOL;
     echo "<dt>Customer name:</dt><dd>".$row['lastname'].", ".$row['firstname']."</dd>".PHP_EOL;
     echo "<dt>Extras:</dt><dd>".$row['pizzaextras']."</dd>".PHP_EOL;
-    echo "<dt>Pizzas:</dt><dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+    echo "<dt>Pizzas:</dt>";
+    echo "<dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+    while ($row = mysqli_fetch_array($result)) {
+    echo "<dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+    } 
+    } else {
     echo "</dl></fieldset>".PHP_EOL;
-} else echo "<h2>No order found!</h2>"; //Feedback
+    } 
 
 mysqli_free_result($result); //free memory from the query
 mysqli_close($DBC); //close connection

@@ -1,6 +1,7 @@
 <?php
 include "checksession.php";
 checkUser();
+loginstatus();
 ?>
 
 <!DOCTYPE html>
@@ -10,32 +11,93 @@ checkUser();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waipukurau Pizzeria - Place an order</title>
-
-    <!--CSS Stylesheet for datetime picker (flatpickr)-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <!--CSS to style select box-->
-    <style>
-        select {
-        width: 150px;
-        margin: 10px;
-    }
-    </style>
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
 </head>
 <body>
 
 <?php
-include "config.php"; //load in any variables
-$DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
-//insert DB code from here onwards
-//check if the connection was good
-if (mysqli_connect_errno()) {
-    echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
-    exit; //stop processing the page further
+    include "config.php"; //load in any variables
+    $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
+
+
+
+    if (mysqli_connect_errno()) {
+        echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+        exit; //stop processing the page further
+  };
+function pr($data){
+    echo '<pre>'.print_r($data,true).'</pre>';
+    exit;
 }
 
+    //function to clean input but not validate type and content
+function cleanInput($data) {  
+    return htmlspecialchars(stripslashes(trim($data)));
+  }
+  
+  //the data was sent using a formtherefore we use the $_POST instead of $_GET
+  //check if we are saving data first by checking if the submit button exists in the array
+  if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] == 'Place Order')) {
+    //if ($_SERVER["REQUEST_METHOD"] == "POST") { //alternative simpler POST test    
+    //pr($_POST);
+    //validate data incoming from form
+    //this needs to send datetime-local to the server
+    $error = 0; //clear our error flag
+    $msg = 'Error: ';
+    if (isset($_POST['orderon']) and !empty($_POST['orderon']) and is_string($_POST['orderon'])) {
+      $orderon = cleanInput($_POST['orderon']); 
+      //we would also do context checking here for contents, etc       
+    } else {
+      $error++; //bump the error flag
+      $msg .= 'Invalid order date/time '; //append eror message
+      $orderon = '';  
+    } 
+
+    //extras to post
+    if (isset($_POST['extras']) and !empty($_POST['extras']) and is_string($_POST['extras'])) {
+        $extras = cleanInput($_POST['extras']);        
+        //$extras = (strlen($ex)>200)?substr($ex,0,200):$ex; //check length and clip if too big   
+    } else {
+        $error++; //bump the error flag
+        $msg .= 'Invalid description  '; //append eror message
+        $extras = '';  
+    }
+    
+    //Post orderon and extras values to the database
+    if ($error == 0) {
+        $customerID = getCustomerID();
+        $query = "INSERT INTO orders (orderon,pizzaextras,customerID) VALUES (?,?,?)";
+        $stmt = mysqli_prepare($DBC,$query) or die(mysqli_error($DBC)); //prepare the query
+        mysqli_stmt_bind_param($stmt,'ssi', $orderon, $extras, $customerID); 
+        mysqli_stmt_execute($stmt) or die(mysqli_error($DBC));
+        mysqli_stmt_close($stmt);    
+
+        $orderID = mysqli_insert_id($DBC);
+        //pr($_POST);
+    foreach($_POST['items'] as $orderItem){
+        $query = "INSERT INTO orderlines (orderID,itemID,qty) VALUES (?,?,?)";
+        $stmt = mysqli_prepare($DBC,$query) or die(mysqli_error($DBC)); //prepare the query
+        mysqli_stmt_bind_param($stmt,'iii', $orderID, $orderItem['itemID'], $orderItem['qty']); 
+        mysqli_stmt_execute($stmt) or die(mysqli_error($DBC));
+        mysqli_stmt_close($stmt);
+}
+
+    echo "<h2>Order placed!</h2>";        
+    } else { 
+      echo "<h2>$msg</h2>".PHP_EOL;
+    }
+}
+
+
+// Preparing query to bring pizza data into the option value html tag
+//This is commented out, this query is to bring the pizza data from SQL data base into order form (not implemented)
+$query = 'SELECT itemID, pizza, pizzatype, price FROM fooditems ORDER BY itemID';
+$result = mysqli_query($DBC,$query);
+$rowcount = mysqli_num_rows($result);
 ?>
+
 
 <h1>Place an order</h1>
 <h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
@@ -44,72 +106,62 @@ if (mysqli_connect_errno()) {
 <form method="POST" action="placeorder.php">
 <p>
     <label for="orderon">Order for (date & time):</label>
-    <input type="datetime-local" name="ordertime" id="ordertime" required>
+    <input type="datetime-local" name="orderon" id="orderon" required>
 </p>
 <p>
     <label for="extras">Extras:</label>
     <input type="text" name="extras" max="200">
 </p>
-    <h4>Pizzas for this order:</h4>
-    <table id="pizzaTable">
-            <tr>
-                <td>
-                    <select name="pizzatype" id="pizzatype">
-                        <option value="none" selected disabled hidden>none</option> <!--Needs error checking to ensure customer cannot enter none as pizza type-->
-                        <option value="pizza1">Pizza 1 (S) $10</option>
-                        <option value="pizza2">Pizza 2 (S) $10</option>
-                        <option value="pizza3">Pizza 3 (S) $6</option>
-                        <option value="pizza4">Pizza 4 (S) $6</option>
-                        <option value="pizza5">Pizza 5 (S) $8</option>
-                        <option value="pizza6">Pizza 6 (S) $7</option>
-                        <option value="pizza7">Pizza 7 (S) $8</option>
-                        <option value="pizza8">Pizza (S) $9</option>
-                        <option value="pizza9">Pizza 9 (V) $9</option>
-                        <option value="pizza11">Pizza 10 (V) $6</option>
-                        <option value="pizza12">Pizza 11 (V) $6</option>
-                        <option value="pizza13">Pizza 12 (V) $7</option>
-                        </select>
-                </td>
-                <td>
-                    <input type="number" name="qty" min="1" max="10">
-                </td>
-                <td><input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/></td>
-            </tr>
-        </table>
-        <br>
 
-        <input type="button" class="button" id="addItem" value="Add Item" onclick="addPizza()"><br><br>
-        
-        <input type="submit" value="Place Order" name="placeorder" id="placeorder"><a href="test.html">[Cancel]</a>
+<h4>Pizzas for this order:</h4>
+    <table id="pizzaTable">
+<tr><td>
+    <select id="defaultOptions" name="items[1][itemID]">
+<?php
+        if ($rowcount > 0) {
+            while($row = mysqli_fetch_array($result)) {
+            $id = $row['itemID'];
+            echo '<option value="'.$id.'">'.$row['pizza'].' ('.$row['pizzatype'].') $'.$row['price'].'</option>';
+            }
+        } else {
+            echo '<p>No pizza found in database</p>';
+        }
+        echo '</select>';
+        mysqli_free_result($result); //free any memory used by the query
+        mysqli_close($DBC); //close the connection once done
+?>
+</select>
+</td>
+
+<td>
+    <input type="number" name="items[1][qty]" min="1" max="10" value="1"></td>
+</tr>
+</table>
+    <input type="button" class="button" id="addItem" value="Add Item" onclick="addPizza()"><br><br>
+    <input type="submit" name="submit" value="Place Order">
+     <a href="listorders.php">[Cancel]</a>
 </form>
 
-    <!--JavaScript for datetime picker (flatpickr)-->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- JavaScript for adding item to place order page -->
     <script>
-        config = {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today"
-        }
-        flatpickr("input[type=datetime-local]", config);
-
-    //JavaScript for adding item to place order page
-        function addPizza()
-        {
-            var x =document.getElementById('pizzaTable').insertRow();
-            var y = x.insertCell(0);
-            var z = x.insertCell(1);
-            var a = x.insertCell(2);
-            y.innerHTML="<select name='pizzatype' id='pizzatype'><option value='none' selected disabled hidden>none</option><option value='pizza1'>Pizza 1 (S) $10</option><option value='pizza2'>Pizza 2 (S) $10</option><option value='pizza3'>Pizza 3 (S) $6</option><option value='pizza4'>Pizza 4 (S) $6</option><option value='pizza5'>Pizza 5 (S) $8</option><option value='pizza6'>Pizza 6 (S) $7</option><option value='pizza7'>Pizza 7 (S) $8</option><option value='pizza8'>Pizza (S) $9</option><option value='pizza9'>Pizza 9 (V) $9</option><option value='pizza10'>Pizza 10 (V) $6</option><option value='pizza11'>Pizza 11 (V) $6</option><option value='pizza12'>Pizza 12 (V) $7</option></select>";
-            z.innerHTML="<input type='number' name='pizzaamount' min='1' max='10'>"
-            a.innerHTML += "<button onClick='deletePizza(self)'>Delete</button>";
-            //"<td><input type="submit" class="button" value="Delete" onclick="deletePizza(self);"/></td>"
-        };
-        function deletePizza(row) 
-        {
-            var i = row.parentNode.row.parentNode.rowIndex;
-            document.getElementById('pizzaTable').deletePizza(i);
-        };
+    var totalItems=1;
+    function addPizza()
+    {
+         totalItems++;
+        var x =document.getElementById('pizzaTable').insertRow();
+        var y = x.insertCell(0);
+        var z = x.insertCell(1);
+        var a = x.insertCell(2);
+        y.innerHTML="<select name='items["+totalItems+"][itemID]'>"+document.getElementById('defaultOptions').innerHTML+"</select>";
+        z.innerHTML="<input type='number' name='items["+totalItems+"][qty]' min='1' max='10'>";
+        a.innerHTML+="<input type='button' class='button' value='Delete' onClick='deletePizza(1)'></input>";
+    }
+    function deletePizza(row) 
+    {
+        var i = row.parentNode.row.parentNode.rowIndex;
+        document.getElementById('pizzaTable').deletePizza(i);
+    }
     </script>
 </body>
 </html>
+

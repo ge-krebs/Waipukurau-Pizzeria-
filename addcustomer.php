@@ -41,7 +41,6 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 //lastname ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***
     if (isset($_POST['lastname']) and!empty($_POST['lastname']) and is_string($_POST['lastname'])) {
       $ln = cleanInput($_POST['lastname']);  
-
       $lastname = (strlen($ln)>50)?substr($ln,1,50):$ln;
     } else {
         $error++;
@@ -63,7 +62,6 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
 //password ***CHECK FOR SECURITY CONCERNS AND CORRECT VALIDATION***  
     if (isset($_POST['password']) and !empty($_POST['password']) and is_string($_POST['password'])) {
       $pw = cleanInput($_POST['password']); 
-
       $password = cleanInput(strlen($pw) > 50)?substr($pw,1,50):$pw;
 
     } else {

@@ -49,11 +49,24 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
        $error++; //bump the error flag
        $msg .= 'Invalid Food Item ID '; //append error message
        $id = 0;  
-    }        
-    
-//save the food item data if the error flag is still clear and food item id is > 0
+    }
+
+//delete item from orderlines if existing
     if ($error == 0 and $id > 0) {
-        $query = "DELETE FROM orders WHERE orderID=?; DELETE FROM orderlines WHERE orderID=?";
+        $query = "DELETE FROM orderlines WHERE orderID=?";
+        $stmt = mysqli_prepare($DBC,$query); //prepare the query
+        mysqli_stmt_bind_param($stmt,'i', $id); 
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);    
+        //echo "<h2>Order ID #$id has been deleted!</h2>";     
+        
+    } else { 
+      echo "<h2>$msg</h2>".PHP_EOL;
+    }     
+    
+//save the delete item if the error flag is still clear and food item id is > 0
+    if ($error == 0 and $id > 0) {
+        $query = "DELETE FROM orders WHERE orderID=?";
         $stmt = mysqli_prepare($DBC,$query); //prepare the query
         mysqli_stmt_bind_param($stmt,'i', $id); 
         mysqli_stmt_execute($stmt);
@@ -62,7 +75,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
         
     } else { 
       echo "<h2>$msg</h2>".PHP_EOL;
-    }      
+    }          
 }
 
 //prepare query to send to server
@@ -87,6 +100,9 @@ if ($rowcount > 0) {
     echo "<dt>Customer name:</dt><dd>".$row['lastname'].", ".$row['firstname']."</dd>".PHP_EOL;
     echo "<dt>Extras:</dt><dd>".$row['pizzaextras']."</dd>".PHP_EOL;
     echo "<dt>Pizzas:</dt><dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+        } 
     echo "</dl></fieldset>".PHP_EOL;
     ?><form method="POST" action="deleteorder.php">
         <h2>Are you sure you want to delete this order?</h2>

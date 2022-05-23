@@ -28,11 +28,17 @@ function checkUser() {
 //checks login status and shows user message
 function loginStatus() {
     $un = $_SESSION['email'];
-    if ($_SESSION['loggedin'] == 1)     
+    if ($_SESSION['loggedin'] == 1)
         echo "<h2>Logged in as $un</h2>";
     else
         echo "<h2>Logged out</h2>";
         $_SESSION['email'] = '';         
+}
+
+function getCustomerID(){
+checkUser();
+return $_SESSION['userid'];
+
 }
  
 //log a user in
