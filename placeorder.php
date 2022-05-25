@@ -55,22 +55,22 @@ function cleanInput($data) {
       $orderon = '';  
     } 
 
-    //extras to post
-    if (isset($_POST['extras']) and !empty($_POST['extras']) and is_string($_POST['extras'])) {
-        $extras = cleanInput($_POST['extras']);        
-        //$extras = (strlen($ex)>200)?substr($ex,0,200):$ex; //check length and clip if too big   
-    } else {
-        $error++; //bump the error flag
-        $msg .= 'Invalid description  '; //append eror message
-        $extras = '';  
-    }
-    
+    // //extras to post
+    // if (isset($_POST['extras']) and !empty($_POST['extras']) and is_string($_POST['extras'])) {
+    //     $extras = cleanInput($_POST['extras']);        
+    //     //$extras = (strlen($ex)>200)?substr($ex,0,200):$ex; //check length and clip if too big   
+    // } else {
+    //     $error++; //bump the error flag
+    //     $msg .= 'Invalid description  '; //append eror message
+    //     $extras = '';  
+    // }
+
     //Post orderon and extras values to the database
     if ($error == 0) {
         $customerID = getCustomerID();
         $query = "INSERT INTO orders (orderon,pizzaextras,customerID) VALUES (?,?,?)";
         $stmt = mysqli_prepare($DBC,$query) or die(mysqli_error($DBC)); //prepare the query
-        mysqli_stmt_bind_param($stmt,'ssi', $orderon, $extras, $customerID); 
+        mysqli_stmt_bind_param($stmt,'ssi', $orderon, $extras['pizzaextras'], $customerID); 
         mysqli_stmt_execute($stmt) or die(mysqli_error($DBC));
         mysqli_stmt_close($stmt);    
 
@@ -119,7 +119,7 @@ $rowcount = mysqli_num_rows($result);
     <select id="defaultOptions" name="items[1][itemID]">
 <?php
         if ($rowcount > 0) {
-            while($row = mysqli_fetch_array($result)) {
+            while  ($row = mysqli_fetch_array($result)) { //For loop should be used to stop pizza dropdown at 10 pizzas
             $id = $row['itemID'];
             echo '<option value="'.$id.'">'.$row['pizza'].' ('.$row['pizzatype'].') $'.$row['price'].'</option>';
             }
@@ -154,7 +154,7 @@ $rowcount = mysqli_num_rows($result);
         var a = x.insertCell(2);
         y.innerHTML="<select name='items["+totalItems+"][itemID]'>"+document.getElementById('defaultOptions').innerHTML+"</select>";
         z.innerHTML="<input type='number' name='items["+totalItems+"][qty]' min='1' max='10'>";
-        a.innerHTML+="<input type='button' class='button' value='Delete' onClick='deletePizza(1)'></input>";
+        a.innerHTML+="<input type='button' class='button' value='Delete' onClick='deletePizza()'></input>";
     }
     function deletePizza(row) 
     {

@@ -122,7 +122,7 @@ if ($rowcount > 0) {
    </p>
 
    <input type="submit" name="submit" value="Update">
-   <a href="/pizza/">[Cancel]</a>   
+   <a href="listcustomers.php">[Cancel]</a>   
  </form>
 <?php 
 } else { 

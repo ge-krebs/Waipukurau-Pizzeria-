@@ -23,7 +23,7 @@ checkUser();
 <body>
     <!--Fields are not required as the customer may wish to only change one field-->
     <h1>Order details update</h1>
-    <h2><a href="listorders.html">[Return to the Orders listing]</a><a href="index.html">[Return to the main page]</a></h2>
+    <h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
     <h3>Pizza order for customer Admin, Admin</h3>
     <form action="">
     <label for="editordertime">Order for (date & time):</label>
@@ -201,7 +201,7 @@ checkUser();
             <option value="pizza10">Pizza 12 (V) $7</option>
             <input type="number" name="quantity" min="1" max="10"><br><br>
         </select>
-        <input type="submit" value="Update" name="updateorder" id="updateorder"><a href="editorder.html">[Cancel]</a>
+        <input type="submit" value="Update" name="updateorder" id="updateorder"><a href="editorder.php">[Cancel]</a>
     </form>
 
     <!--JavaScript for datetime picker (flatpickr)-->
