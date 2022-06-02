@@ -48,8 +48,8 @@ checkUser();
                 $id = $row['bookingID'];
                 echo '<tr><td>'.$row['bookingdate'].' ('.$row['people'].')'.'</td><td>'.$row['telephone'].'</td>';
                 echo '<td><a href="viewbooking.php?id='.$id.'">[view]</a>';
-                echo '<a href="editbooking.php?=id'.$id.'">[edit]</a>';
-                echo '<a href="deletebooking.php?=id'.$id.'">[delete]</a></td>';
+                echo '<a href="editbooking.php?id='.$id.'">[edit]</a>';
+                echo '<a href="deletebooking.php?id='.$id.'">[delete]</a></td>';
                 echo '</tr>'.PHP_EOL;
             }
         }    

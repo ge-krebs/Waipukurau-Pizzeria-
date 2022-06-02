@@ -21,13 +21,11 @@ loginstatus();
     include "config.php"; //load in any variables
     $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
-
-
     if (mysqli_connect_errno()) {
         echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
         exit; //stop processing the page further
   };
-function pr($data){
+    function pr($data){
     echo '<pre>'.print_r($data,true).'</pre>';
     exit;
 }

@@ -26,7 +26,9 @@ if (empty($id) or !is_numeric($id)) {
 } 
 
 //preparing a query to be sent to server
-$query = 'SELECT * FROM booking WHERE bookingID='.$id;
+$query = 'SELECT * FROM booking 
+INNER JOIN customer ON booking.customerID = customer.customerID 
+WHERE bookingID='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
@@ -40,8 +42,13 @@ $rowcount = mysqli_num_rows($result);
 if ($rowcount > 0) {
     echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
     $row = mysqli_fetch_assoc($result);
-    echo "<dt>"
-}
+    echo "<dt>Booking date & time:</dt><dd>".$row['bookingdate']."</dd>".PHP_EOL;
+    echo "<dt>Party size:</dt><dd>".$row['people']."</dd>".PHP_EOL;
+    echo "<dt>Customer:</dt><dd>".$row['lastname'].", ".$row['firstname']." (".$row['telephone'].")"."</dd></fieldset>".PHP_EOL;
+} else echo "<h2>No booking found!</h2>";
+
+mysqli_free_result($result); //free any memory used by the query
+mysqli_close($DBC); //close the connection once done
 
 ?>
 </body>

@@ -1,3 +1,9 @@
+<?php
+include "checksession.php";
+checkUser();
+loginstatus();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,33 +12,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waipukurau Pizzeria - Make a booking</title>
     <!--CSS Stylesheet for datetime picker (flatpickr)-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
 </head>
 <body>
+
+<?php
+
+    include "config.php"; //Load in any variables
+    $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
+
+    if (mysqli_connect_errno()) {
+        echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
+        exit; //stop processing the page further
+    };
+
+    function pr($data){
+        echo '<pre>'.print_r($data,true).'</pre>';
+        exit;
+    }
+
+    function cleanInput($data) {
+        return htmlspecialchars(stripslashes(trim($data)));
+    }
+
+    if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] == 'Add')) {
+        $error = 0;
+        $msg = 'Error: ';
+        //pr($_POST);
+        if($error == 0) {
+            $customerID = getCustomerID();
+            $query = "INSERT INTO booking (telephone,bookingdate,people,customerID) VALUES (?,?,?,?)";
+            $stmt = mysqli_prepare($DBC, $query) or die(mysqli_error($DBC));
+            mysqli_stmt_bind_param($stmt, 'sssi', $telephone['telephone'], $bookingdate['bookingdate'], $people['people'], $customerID);
+            mysqli_stmt_execute($stmt) or die(mysqli_error($DBC));
+            mysqli_stmt_close($stmt);
+            echo "<h2>Booking confirmed</h2>";
+        } else {
+            echo "<h2>$msg</h2>".PHP_EOL;
+        }
+        mysqli_close($DBC); // Close connection
+    }
+?>
+
     <h1>Make a booking</h1>
     <h2><a href="listbookings.php">[Return to the Bookings listing]</a><a href="index.php">[Return to the main page]</a></h2>
     <h2>Booking for Test</h2>
 
-    <form>
+    <form method="POST" action="makebooking.php">
+    <p>
         <label for="bookingdate">Booking date & time:</label>
-        <input type="datetime-local" name="bookingdate" id="bookingdate"><br><br>
+        <input type="datetime-local" name="bookingdate" id="bookingdate">
+    </p>
+    <p>
         <label for="people">Party size (# people, 1-10)</label>
-        <input type="number" id="people" name="people" min="1" max="10" required><br><br>
+        <input type="number" id="people" name="people" min="1" max="10" required>
+    </p>
+    <p>
         <label for="telephone">Contact number:</label>
-        <input type="tel" id="telephone" name="telephone" placeholder="###-###-####" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required><br><br>
-        <input type="Submit" value="Add"> <!--Temporary submit button-->
-        <a href="makebooking.html">[Cancel]</a>
+        <input type="tel" id="telephone" name="telephone" placeholder="###-###-####" maxlength="12" required> <!--pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"-->
+    </p>
+        <input type="Submit" name="submit" value="Add">
+        <a href="listbookings.php">[Cancel]</a>
     </form>
 
-    <!--JavaScript for datetime picker (flatpickr)-->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        config = {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today" //Added min date of today to prevent user from booking previous date
-        }
-        flatpickr("input[type=datetime-local]", config);
-    </script>
 </body>
 </html>
