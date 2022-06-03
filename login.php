@@ -1,9 +1,10 @@
 <?php
 //For debugging purposes, shows POST data, has been commented out as not in use
 //echo "<pre>"; var_dump($_POST); echo "</pre>";
- 
+include "header.php";
+include "menu.php";
+
 include "checksession.php";
-loginStatus(); //show the current login status
 
 //For debugging purposes, shows array of session, has been commented out
 //echo "<pre>"; var_dump($_SESSION); echo "</pre>";
@@ -57,20 +58,32 @@ if (isset($_POST['login']) and !empty($_POST['login']) and ($_POST['login'] == '
     }      
 }
 ?>
-<h1>Login</h1>
-<h2><a href="index.php">[Return to main page]</a></h2>
-<form method="POST" action="login.php">
-  <p>
-    <label for="email">Email: </label>
-    <input type="text" id="email" name="email" maxlength="32"> 
-  </p> 
-  <p>
-    <label for="password">Password: </label>
-    <input type="password" id="password" name="password" maxlength="32"> 
-  </p> 
-  
-   <input type="submit" name="login" value="Login">
-   <input type="submit" name="logout" value="Logout">   
- </form>
-</body>
-</html>
+  <div id="body">
+    <div class="header">
+    <div>
+      <h1>Login</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+      <?php loginStatus(); ?>
+      <form method="POST" action="login.php">
+        <p>
+          <label for="email">Email: </label>
+          <input type="text" id="email" name="email" maxlength="32"> 
+        </p> 
+        <p>
+          <label for="password">Password: </label>
+          <input type="password" id="password" name="password" maxlength="32"> 
+        </p> 
+        
+        <input type="submit" name="login" value="Login">
+        <input type="submit" name="logout" value="Logout">   
+      </form>
+    </div>
+    </div>
+  </div>
+
+<?php
+include "footer.php";
+?>

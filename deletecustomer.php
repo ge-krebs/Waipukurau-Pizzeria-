@@ -1,13 +1,9 @@
 <?php
+include "header.php";
+include "menu.php";
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE HTML>
-<html><head><title>View Customer</title> </head>
- <body>
-
-<?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -68,32 +64,42 @@ $query = 'SELECT * FROM customer WHERE customerid='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
-<h1>Customer details preview before deletion</h1>
-<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='index.php'>[Return to the main page]</a></h2>
+<div id="body">
+    <div class="header">
+    <div>
+        <h1>Customer details preview before deletion</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+        <h2><a href='listcustomers.php'>[Return to Customer listing]</a><a href='index.php'>[Return to main page]</a></h2>
+        <?php
+        //makes sure we have the customer
+        if ($rowcount > 0) {  
+        echo "<fieldset><legend>Customer detail #$id</legend><dl>"; 
+        $row = mysqli_fetch_assoc($result);
+        echo "<dt>Name:</dt><dd>".$row['firstname']."</dd>".PHP_EOL;
+        echo "<dt>Lastname:</dt><dd>".$row['lastname']."</dd>".PHP_EOL;
+        echo "<dt>Email:</dt><dd>".$row['email']."</dd>".PHP_EOL;
+        echo "<dt>Password:</dt><dd>".$row['password']."</dd>".PHP_EOL; 
+        echo '</dl></fieldset>'.PHP_EOL;  
+        ?><form method="POST" action="deletecustomer.php">
+            <h2>Are you sure you want to delete this customer?</h2>
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <input type="submit" name="submit" value="Delete">
+            <a href="listcustomers.php">[Cancel]</a>
+            </form>
+        <?php    
+        } else echo "<h2>No Customer found, possbily deleted!</h2>"; //suitable feedback
+
+        mysqli_free_result($result); //free any memory used by the query
+        mysqli_close($DBC); //close the connection once done
+        ?>
+        </table>
+    </div>
+    </div>
+</div>
 <?php
-
-//makes sure we have the customer
-if ($rowcount > 0) {  
-   echo "<fieldset><legend>Customer detail #$id</legend><dl>"; 
-   $row = mysqli_fetch_assoc($result);
-   echo "<dt>Name:</dt><dd>".$row['firstname']."</dd>".PHP_EOL;
-   echo "<dt>Lastname:</dt><dd>".$row['lastname']."</dd>".PHP_EOL;
-   echo "<dt>Email:</dt><dd>".$row['email']."</dd>".PHP_EOL;
-   echo "<dt>Password:</dt><dd>".$row['password']."</dd>".PHP_EOL; 
-   echo '</dl></fieldset>'.PHP_EOL;  
-   ?><form method="POST" action="deletecustomer.php">
-     <h2>Are you sure you want to delete this customer?</h2>
-     <input type="hidden" name="id" value="<?php echo $id; ?>">
-     <input type="submit" name="submit" value="Delete">
-     <a href="listcustomers.php">[Cancel]</a>
-     </form>
-<?php    
-} else echo "<h2>No Customer found, possbily deleted!</h2>"; //suitable feedback
-
-mysqli_free_result($result); //free any memory used by the query
-mysqli_close($DBC); //close the connection once done
+include "footer.php";
 ?>
-</table>
-</body>
-</html>
   

@@ -1,13 +1,9 @@
 <?php
+include "header.php";
 include "checksession.php";
-checkUser();
-?>
+include "menu.php";
+loginStatus(); //show the current login status
 
-<!DOCTYPE HTML>
-<html><head><title>Browse food items</title> </head>
- <body>
-
-<?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -35,19 +31,17 @@ if ($rowcount > 0) {
 	  $id = $row['itemID'];	
       $pt = $row['pizzatype']=='S'?'Standard':'Vegeterian';
 	  echo '<tr><td>'.$row['pizza'].'</td><td>'.$pt.'</td>';
-	  echo '<td><a href="viewitem.php?id='.$id.'">[view]</a>';
-	  echo '<a href="edititem.php?id='.$id.'">[edit]</a>';
-	  echo '<a href="deleteitem.php?id='.$id.'">[delete]</a></td>';
+	  echo     '<td><a href="viewitem.php?id='.$id.'">[view]</a>';
+	  echo         '<a href="edititem.php?id='.$id.'">[edit]</a>';
+	  echo         '<a href="deleteitem.php?id='.$id.'">[delete]</a></td>';
       echo '</tr>'.PHP_EOL;
    }
-} else {
-    echo "<h2>No food items found!</h2>"; //suitable feedback
-}
+} else echo "<h2>No food items found!</h2>"; //suitable feedback
 
 mysqli_free_result($result); //free any memory used by the query
 mysqli_close($DBC); //close the connection once done
-?>
-</table>
-</body>
-</html>
+
+echo "</table>";
+
+include "footer.php"; ?>  
   

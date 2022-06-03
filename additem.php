@@ -1,13 +1,10 @@
  <?php
+include "header.php";
+include "menu.php";
+
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE HTML>
-<html><head><title>Add a New Food Item</title> </head>
- <body>
-
-<?php
 //function to clean input but not validate type and content
 function cleanInput($data) {  
   return htmlspecialchars(stripslashes(trim($data)));
@@ -84,31 +81,43 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     mysqli_close($DBC); //close the connection once done
 }
 ?>
-<h1>Add a new food item</h1>
-<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
+<div id="body">
+    <div class="header">
+    <div>
+      <h1>Add a new food item</h1>
+   </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+      <h2><a href='listitems.php'>[Return to food item listing]</a><a href='index.php'>[Return to main page]</a></h2>
 
-<form method="POST" action="additem.php">
-  <p>
-    <label for="pizza">Pizza name: </label>
-    <input type="text" id="pizza" name="pizza" minlength="5" maxlength="15" required> 
-  </p> 
-  <p>
-    <label for="description">Description: </label>
-    <input type="text" id="description" size="100" name="description" minlength="5" maxlength="200" required> 
-  </p>  
-  <p>  
-    <label for="pizzatype">Pizza type: </label>
-    <input type="radio" id="pizzatype" name="pizzatype" value="S" checked> Standard 
-    <input type="radio" id="pizzatype" name="pizzatype" value="V"> Vegetarian 
-   </p>     
-  <p>
-    <label for="price">Price $(5.0 to 50.0): </label>
-    <input type="number" id="price" name="price" min="5" max="50" value="5.0" step="0.10" required> 
-  </p> 
-  
-   <input type="submit" name="submit" value="Add">
-   <a href="listitems.php">[Cancel]</a>   
- </form>
-</body>
-</html>
+      <form method="POST" action="additem.php">
+      <p>
+         <label for="pizza">Pizza name: </label>
+         <input type="text" id="pizza" name="pizza" minlength="5" maxlength="15" required> 
+      </p> 
+      <p>
+         <label for="description">Description: </label>
+         <input type="text" id="description" size="100" name="description" minlength="5" maxlength="200" required> 
+      </p>  
+      <p>  
+         <label for="pizzatype">Pizza type: </label>
+         <input type="radio" id="pizzatype" name="pizzatype" value="S" checked> Standard 
+         <input type="radio" id="pizzatype" name="pizzatype" value="V"> Vegetarian 
+         </p>     
+      <p>
+         <label for="price">Price $(5.0 to 50.0): </label>
+         <input type="number" id="price" name="price" min="5" max="50" value="5.0" step="0.10" required> 
+      </p> 
+      
+         <input type="submit" name="submit" value="Add">
+         <a href="listitems.php">[Cancel]</a>   
+      </form>
+   </div>
+   </div>
+</div>
+
+<?php
+include "footer.php";
+?>
   

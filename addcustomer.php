@@ -1,13 +1,10 @@
 <?php
+include "header.php";
+include "menu.php";
+
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE HTML>
-<html><head><title>Register new customer</title> </head>
- <body>
-
-<?php
 //function to clean input but not validate type and content
 function cleanInput($data) {  
   return htmlspecialchars(stripslashes(trim($data)));
@@ -84,30 +81,38 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     mysqli_close($DBC); //close the connection once done
 }
 ?>
-<h1>New Customer Registration</h1>
-<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='index.php'>[Return to the main page]</a></h2>
-
-<form method="POST" action="addcustomer.php">
-  <p>
-    <label for="firstname">Name: </label>
-    <input type="text" id="firstname" name="firstname" minlength="3" maxlength="50" required> 
-  </p> 
-  <p>
-    <label for="lastname">Last Name: </label>
-    <input type="text" id="lastname" name="lastname" minlength="3" maxlength="50" required> 
-  </p>  
-  <p>  
-    <label for="email">Email: </label>
-    <input type="email" id="email" name="email" maxlength="100" size="50" required> 
-   </p>
-  <p>
-    <label for="password">Password: </label>
-    <input type="password" id="password" name="password" minlength="8" maxlength="32" required> 
-  </p> 
-  
-   <input type="submit" name="submit" value="Register">
-   <a href="listcustomers.php">[Cancel]</a>
- </form>
-</body>
-</html>
-  
+<div id="body">
+  <div class="header">
+    <div>
+    <h1>New Customer Registration</h1>
+    </div>
+  </div>
+  <div class="footer">
+  <div class="article">
+    <form method="POST" action="addcustomer.php">
+      <p>
+        <label for="firstname">Name: </label>
+        <input type="text" id="firstname" name="firstname" minlength="3" maxlength="50" required> 
+      </p> 
+      <p>
+        <label for="lastname">Last Name: </label>
+        <input type="text" id="lastname" name="lastname" minlength="3" maxlength="50" required> 
+      </p>  
+      <p>  
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" maxlength="100" size="50" required> 
+      </p>
+      <p>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" minlength="8" maxlength="32" required> 
+      </p> 
+      
+      <input type="submit" name="submit" value="Register">
+      <a href="listcustomers.php">[Cancel]</a>
+    </form>
+  </div>
+  </div>
+</div>
+<?php
+include "footer.php";
+?>

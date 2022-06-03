@@ -1,30 +1,52 @@
 <?php
+include "header.php";
 include "checksession.php";
-loginStatus();
+
+include "menu.php";
+//----------- page content starts here
+
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria</title>
-</head>
-<body>
-
-    <h1>Waipukurau Pizzeria - BIT608</h1>
-    <h2>Temporary launch page for web application</h2>
-
-    <li><a href="listcustomers.php">Customer listing </a></li>
-    <li><a href="listbookings.php">Bookings listing</a></li>
-    <li><a href="listorders.php">Orders listing</a></li>
-    <li><a href="listitems.php">Items listing</a></li>
-    <li><a href="placeorder.php">Place order</a></li>
-    <li><a href="makebooking.php">Make booking</a></li>
-    <li><a href="login.php">Login</a></li>
-    <li><a href="privacy.php">Privacy Statement</a></li>
-
-    
-</body>
-</html>
+		<div id="body" class="home">			
+            <div class="header">
+				<img src="images/bg-home.jpg" alt="">
+				<div>
+					<a href="product.html">Seafood Delight</a>
+				</div>
+			</div>
+			<div class="body">
+				<div>
+					<div>
+						<h1>NEW PRODUCT</h1>
+						<h2>The Tasty Calzone Pizza</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget lacinia sem. Quisque a libero semper, efficitur ante quis, molestie erat. Phasellus ut turpis libero. Nulla ex est, tristique et nunc id, interdum dignissim nunc. Proin eget ipsum ipsum. Nunc a lectus et neque scelerisque consectetur. Nulla facilisi. </p>
+					</div>
+					<img src="images/calzone.jpg" alt="">
+				</div>
+			</div>
+			<div class="footer">
+				<div>
+					<ul>
+						<li>
+							<a href="product.html" class="product"></a>
+							<h1>Pizzas</h1>
+						</li>
+						<li>
+							<a href="about.html" class="about"></a>
+							<h1>ABOUT US</h1>
+						</li>
+						<li>
+							<a href="product.html" class="flavor"></a>
+							<h1>RESERVATIONS</h1>
+						</li>
+						<li>
+							<a href="contact.html" class="contact"></a>
+							<h1>CONTACT</h1>
+						</li>
+					</ul>
+				</div>
+			</div>
+        </div>            
+<?php
+//----------- page content ends here
+include "footer.php";
+?>

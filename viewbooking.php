@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria - View booking</title>
-</head>
-<body>
 <?php
+include "header.php";
+include "menu.php";
+
+include "checksession.php";
+
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -32,24 +28,34 @@ WHERE bookingID='.$id;
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
+<div id="body">
+    <div class="header">
+    <div>
+        <h1>Booking details view</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+        <h2><a href="listbookings.php">[Return to Booking listing]</a><a href="index.php">[Return to main menu]</a></h2>
 
-<h1>Booking details view</h1>
-<h2><a href="listbookings.php">[Return to the booking listing]</a><a href="index.php">[Return to the main menu]</a></h2>
+        <?php
 
+        //makes sure we have the customer
+        if ($rowcount > 0) {
+            echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
+            $row = mysqli_fetch_assoc($result);
+            echo "<dt>Booking date & time:</dt><dd>".$row['bookingdate']."</dd>".PHP_EOL;
+            echo "<dt>Party size:</dt><dd>".$row['people']."</dd>".PHP_EOL;
+            echo "<dt>Customer:</dt><dd>".$row['lastname'].", ".$row['firstname']." (".$row['telephone'].")"."</dd></fieldset>".PHP_EOL;
+        } else echo "<h2>No booking found!</h2>";
+
+        mysqli_free_result($result); //free any memory used by the query
+        mysqli_close($DBC); //close the connection once done
+
+        ?>
+    </div>
+    </div>
+</div>
 <?php
-
-//makes sure we have the customer
-if ($rowcount > 0) {
-    echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
-    $row = mysqli_fetch_assoc($result);
-    echo "<dt>Booking date & time:</dt><dd>".$row['bookingdate']."</dd>".PHP_EOL;
-    echo "<dt>Party size:</dt><dd>".$row['people']."</dd>".PHP_EOL;
-    echo "<dt>Customer:</dt><dd>".$row['lastname'].", ".$row['firstname']." (".$row['telephone'].")"."</dd></fieldset>".PHP_EOL;
-} else echo "<h2>No booking found!</h2>";
-
-mysqli_free_result($result); //free any memory used by the query
-mysqli_close($DBC); //close the connection once done
-
+include "footer.php";
 ?>
-</body>
-</html>

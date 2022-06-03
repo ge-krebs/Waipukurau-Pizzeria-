@@ -1,10 +1,9 @@
 <?php
 include "checksession.php";
+include "header.php";
+include "menu.php";
 checkUser();
 ?>
-
-<!DOCTYPE HTML>
-<html><head><title>Browse customers with AJAX autocomplete</title>
 <script>
 
 function searchResult(searchstr) {
@@ -57,8 +56,7 @@ function searchResult(searchstr) {
   xmlhttp.send();
 }
 </script>
-</head>
-<body>
+
 
 <?php
 include "config.php"; //load in any variables
@@ -74,37 +72,45 @@ $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>
 
-<h1>Customer List Search by Lastname</h1>
-<h2><a href='addcustomer.php'>[Create new Customer]</a><a href="index.php">[Return to main page]</a>
-</h2>
-<form>
-  <label for="lastname">Lastname: </label>
-  <input id="lastname" type="text" size="30" 
-         onkeyup="searchResult(this.value)" 
-         onclick="javascript: this.value = ''" 
-         placeholder="Start typing a last name">
+<div id="body">
+  <div class="header">
+    <div>
+    <h1>Customer List</h1>
+    </div>
+  </div>
+  <div class="footer">
+  <div class="article">
+    <h2><a href='addcustomer.php'>[Create new Customer]</a><a href="index.php">[Return to main page]</a></h2>
+    <form>
+      <label for="lastname">Lastname: </label>
+      <input id="lastname" type="text" size="30" 
+            onkeyup="searchResult(this.value)" 
+            onclick="javascript: this.value = ''" 
+            placeholder="Start typing a last name">
 
-</form>
-<table id="tblcustomers" border="1">
-<thead><tr><th>Lastname</th><th>Firstname</th><th>actions</th></tr></thead>
-
+    </form>
+    <table id="tblcustomers" border="1">
+    <thead><tr><th>Lastname</th><th>Firstname</th><th>actions</th></tr></thead>
+    <?php
+    //check if data available and loop through each customer. displays results in table.
+    if ($rowcount > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+        $id = $row['customerID'];
+        echo '<tr><td>'.$row['firstname'].'</td><td>'.$row['lastname'].'</td>';
+        echo '<td><a href="viewcustomer.php?id='.$id.'">[view]</a>';
+        echo '<a href="editcustomer.php?id='.$id.'">[edit]</a>';
+        echo '<a href="deletecustomer.php?id='.$id.'">[delete]</a></td>';
+        echo '</tr>'.PHP_EOL;
+      }
+    }
+    mysqli_free_result($result); 
+    mysqli_close($DBC);
+    ?>
+    </table>
+    </div>
+    </div>
+</div>
 <?php
-//check if data available and loop through each customer. displays results in table.
-if ($rowcount > 0) {
-  while ($row = mysqli_fetch_assoc($result)) {
-    $id = $row['customerID'];
-    echo '<tr><td>'.$row['firstname'].'</td><td>'.$row['lastname'].'</td>';
-    echo '<td><a href="viewcustomer.php?id='.$id.'">[view]</a>';
-	  echo '<a href="editcustomer.php?id='.$id.'">[edit]</a>';
-	  echo '<a href="deletecustomer.php?id='.$id.'">[delete]</a></td>';
-    echo '</tr>'.PHP_EOL;
-  }
-}
-mysqli_free_result($result); 
-mysqli_close($DBC);
+//----------- page content ends here
+include "footer.php";
 ?>
-
-</table>
-</body>
-</html>
-  

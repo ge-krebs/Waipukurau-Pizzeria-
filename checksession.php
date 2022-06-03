@@ -29,9 +29,9 @@ function checkUser() {
 function loginStatus() {
     $un = $_SESSION['email'];
     if ($_SESSION['loggedin'] == 1)
-        echo "<h2>Logged in as $un</h2>";
+        echo "<h1>Logged in as $un</h1>";
     else
-        echo "<h2>Logged out</h2>";
+        echo "<h1>Logged out</h1>";
         $_SESSION['email'] = '';         
 }
 

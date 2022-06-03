@@ -1,20 +1,12 @@
 <?php
 include "checksession.php";
+include "header.php";
+include "menu.php";
 checkUser();
-loginstatus();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria - Place an order</title>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="script.js"></script>
-</head>
-<body>
 
 <?php
 
@@ -53,22 +45,22 @@ function cleanInput($data) {
       $orderon = '';  
     } 
 
-    // //extras to post
-    // if (isset($_POST['extras']) and !empty($_POST['extras']) and is_string($_POST['extras'])) {
-    //     $extras = cleanInput($_POST['extras']);        
-    //     //$extras = (strlen($ex)>200)?substr($ex,0,200):$ex; //check length and clip if too big   
-    // } else {
-    //     $error++; //bump the error flag
-    //     $msg .= 'Invalid description  '; //append eror message
-    //     $extras = '';  
-    // }
+    //extras to post
+    if (isset($_POST['extras']) and !empty($_POST['extras']) and is_string($_POST['extras'])) {
+        $extras = cleanInput($_POST['extras']);        
+        //$extras = (strlen($ex)>200)?substr($ex,0,200):$ex; //check length and clip if too big   
+    } else {
+        $error++; //bump the error flag
+        $msg .= 'Invalid description  '; //append eror message
+        $extras = '';  
+    }
 
     //Post orderon and extras values to the database
     if ($error == 0) {
         $customerID = getCustomerID();
         $query = "INSERT INTO orders (orderon,pizzaextras,customerID) VALUES (?,?,?)";
         $stmt = mysqli_prepare($DBC,$query) or die(mysqli_error($DBC)); //prepare the query
-        mysqli_stmt_bind_param($stmt,'ssi', $orderon, $extras['pizzaextras'], $customerID); 
+        mysqli_stmt_bind_param($stmt,'ssi', $orderon, $extras, $customerID); 
         mysqli_stmt_execute($stmt) or die(mysqli_error($DBC));
         mysqli_stmt_close($stmt);    
 
@@ -96,49 +88,56 @@ $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result);
 ?>
 
+<div id="body">
+    <div class="header">
+        <div>
+            <h1>Place an order</h1>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="article">
+            <h1>Pizza order</h1>
 
-<h1>Place an order</h1>
-<h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
-<h3>Pizza order</h3>
+        <form method="POST" action="placeorder.php">
+        <p>
+            <label for="orderon">Order for (date & time):</label>
+            <input type="datetime-local" name="orderon" id="orderon" required>
+        </p>
+        <p>
+            <label for="extras">Extras:</label>
+            <input type="text" name="extras" max="200">
+        </p>
+        <h1>Pizzas for this order:</h1>
+            <table id="pizzaTable">
+        <tr><td>
+            <select id="defaultOptions" name="items[1][itemID]">
+            <?php
+                    if ($rowcount > 0) {
+                        while  ($row = mysqli_fetch_array($result)) { //For loop should be used to stop pizza dropdown at 10 pizzas
+                        $id = $row['itemID'];
+                        echo '<option value="'.$id.'">'.$row['pizza'].' ('.$row['pizzatype'].') $'.$row['price'].'</option>';
+                        }
+                    } else {
+                        echo '<p>No pizza found in database</p>';
+                    }
+                    echo '</select>';
+                    mysqli_free_result($result); //free any memory used by the query
+                    mysqli_close($DBC); //close the connection once done
+            ?>
+        </select>
+        </td>
 
-<form method="POST" action="placeorder.php">
-<p>
-    <label for="orderon">Order for (date & time):</label>
-    <input type="datetime-local" name="orderon" id="orderon" required>
-</p>
-<p>
-    <label for="extras">Extras:</label>
-    <input type="text" name="extras" max="200">
-</p>
-
-<h4>Pizzas for this order:</h4>
-    <table id="pizzaTable">
-<tr><td>
-    <select id="defaultOptions" name="items[1][itemID]">
-<?php
-        if ($rowcount > 0) {
-            while  ($row = mysqli_fetch_array($result)) { //For loop should be used to stop pizza dropdown at 10 pizzas
-            $id = $row['itemID'];
-            echo '<option value="'.$id.'">'.$row['pizza'].' ('.$row['pizzatype'].') $'.$row['price'].'</option>';
-            }
-        } else {
-            echo '<p>No pizza found in database</p>';
-        }
-        echo '</select>';
-        mysqli_free_result($result); //free any memory used by the query
-        mysqli_close($DBC); //close the connection once done
-?>
-</select>
-</td>
-
-<td>
-    <input type="number" name="items[1][qty]" min="1" max="10" value="1"></td>
-</tr>
-</table>
-    <input type="button" class="button" id="addItem" value="Add Item" onclick="addPizza()"><br><br>
-    <input type="submit" name="submit" value="Place Order">
-     <a href="listorders.php">[Cancel]</a>
-</form>
+        <td>
+            <input type="number" name="items[1][qty]" min="1" max="10" value="1"></td>
+        </tr>
+        </table>
+            <input type="button" class="button" id="addItem" value="Add Item" onclick="addPizza()"><br><br>
+            <input type="submit" name="submit" value="Place Order">
+            <a href="listorders.php">[Cancel]</a>
+        </form>
+        </div>
+    </div>
+</div>
 
 <!-- JavaScript for adding item to place order page -->
     <script>
@@ -160,6 +159,6 @@ $rowcount = mysqli_num_rows($result);
         document.getElementById('pizzaTable').deletePizza(i);
     }
     </script>
-</body>
-</html>
-
+<?php
+include "footer.php";
+?>

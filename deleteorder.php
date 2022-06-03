@@ -1,19 +1,10 @@
 <?php
+include "header.php";
+include "menu.php";
+
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria - Delete order</title>
-</head>
-<body>
-
-<?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -87,34 +78,45 @@ WHERE orders.orderid='.$id;
 $result = mysqli_query($DBC, $query);
 $rowcount = mysqli_num_rows($result);
 ?>
-    
-<h1>Pizza Order Details View</h1>
-<h2><a href="listorders.php">[Return to the orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
+<div id="body">
+    <div class="header">
+    <div>
+        <h1>Pizza Order Details View</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+        <h2><a href="listorders.php">[Return to the orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
+
+        <?php
+        //make sure there are orders
+        if ($rowcount > 0) {
+            echo "<fieldset><legend>Order details #$id</legend><dl>";
+            $row = mysqli_fetch_assoc($result);
+            echo "<dt>Date & time ordered for</dt><dd>".$row['orderon']."</dd>".PHP_EOL;
+            echo "<dt>Customer name:</dt><dd>".$row['lastname'].", ".$row['firstname']."</dd>".PHP_EOL;
+            echo "<dt>Extras:</dt><dd>".$row['pizzaextras']."</dd>".PHP_EOL;
+            echo "<dt>Pizzas:</dt><dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+            while ($row = mysqli_fetch_array($result)) {
+                echo "<dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
+                } 
+            echo "</dl></fieldset>".PHP_EOL;
+            ?><form method="POST" action="deleteorder.php">
+                <h2>Are you sure you want to delete this order?</h2>
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                <input type="submit" name="submit" value="Delete">
+                <a href="listorders.php">[Cancel]</a>
+            </form>
+        <?php
+        } else echo "<h2>No order found!</h2>"; //Feedback
+
+        mysqli_free_result($result); //free memory from the query
+        mysqli_close($DBC); //close connection
+        ?>
+    </div>
+    </div>
+</div>
 
 <?php
-//make sure there are orders
-if ($rowcount > 0) {
-    echo "<fieldset><legend>Order details #$id</legend><dl>";
-    $row = mysqli_fetch_assoc($result);
-    echo "<dt>Date & time ordered for</dt><dd>".$row['orderon']."</dd>".PHP_EOL;
-    echo "<dt>Customer name:</dt><dd>".$row['lastname'].", ".$row['firstname']."</dd>".PHP_EOL;
-    echo "<dt>Extras:</dt><dd>".$row['pizzaextras']."</dd>".PHP_EOL;
-    echo "<dt>Pizzas:</dt><dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
-    while ($row = mysqli_fetch_array($result)) {
-        echo "<dd>".$row['pizza']." X ".$row['qty']."</dd>".PHP_EOL;
-        } 
-    echo "</dl></fieldset>".PHP_EOL;
-    ?><form method="POST" action="deleteorder.php">
-        <h2>Are you sure you want to delete this order?</h2>
-        <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <input type="submit" name="submit" value="Delete">
-        <a href="listorders.php">[Cancel]</a>
-    </form>
-<?php
-} else echo "<h2>No order found!</h2>"; //Feedback
-
-mysqli_free_result($result); //free memory from the query
-mysqli_close($DBC); //close connection
+include "footer.php";
 ?>
-</body>
-</html>

@@ -1,13 +1,10 @@
 <?php
+include "header.php";
+include "menu.php";
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE HTML>
-<html><head><title>Edit Customer</title> </head>
- <body>
 
-<?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -100,36 +97,48 @@ $rowcount = mysqli_num_rows($result);
 if ($rowcount > 0) {
   $row = mysqli_fetch_assoc($result);
 ?>
-<h1>Customer Details Update</h1>
-<h2><a href='listcustomers.php'>[Return to the Customer listing]</a><a href='index.php'>[Return to the main page]</a></h2>
+<div id="body">
+  <div class="header">
+    <div>
+    <h1>Customer Details Update</h1>
+    </div>
+  </div>
+  <div class="footer">
+  <div class="article">
+    <h2><a href='listcustomers.php'>[Return to Customer listing]</a><a href='index.php'>[Return to main page]</a></h2>
 
-<form method="POST" action="editcustomer.php">
-  <input type="hidden" name="id" value="<?php echo $id;?>">
-  <p>
-    <label for="firstname">Name: </label>
-    <input type="text" id="firstname" name="firstname" minlength="5" 
-           maxlength="50" required value="<?php echo $row['firstname']; ?>"> 
-  </p> 
-  <p>
-    <label for="lastname">Name: </label>
-    <input type="text" id="lastname" name="lastname" minlength="5" 
-           maxlength="50" required value="<?php echo $row['lastname']; ?>">  
-  </p>  
-  <p>  
-    <label for="email">Email: </label>
-    <input type="email" id="email" name="email" maxlength="100" 
-           size="50" required value="<?php echo $row['email']; ?>"> 
-   </p>
+    <form method="POST" action="editcustomer.php">
+      <input type="hidden" name="id" value="<?php echo $id;?>">
+      <p>
+        <label for="firstname">Name: </label>
+        <input type="text" id="firstname" name="firstname" minlength="5" 
+              maxlength="50" required value="<?php echo $row['firstname']; ?>"> 
+      </p> 
+      <p>
+        <label for="lastname">Name: </label>
+        <input type="text" id="lastname" name="lastname" minlength="5" 
+              maxlength="50" required value="<?php echo $row['lastname']; ?>">  
+      </p>  
+      <p>  
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" maxlength="100" 
+              size="50" required value="<?php echo $row['email']; ?>"> 
+      </p>
 
-   <input type="submit" name="submit" value="Update">
-   <a href="listcustomers.php">[Cancel]</a>   
- </form>
-<?php 
-} else { 
-  echo "<h2>Customer not found with that ID</h2>"; //simple error feedback
-}
-mysqli_close($DBC); //close the connection once done
+      <input type="submit" name="submit" value="Update">
+      <a href="listcustomers.php">[Cancel]</a>   
+    </form>
+    <?php 
+    } else { 
+      echo "<h2>Customer not found with that ID</h2>"; //simple error feedback
+    }
+    mysqli_close($DBC); //close the connection once done
+    ?>
+    </div>
+    </div>
+</div>
+
+<?php
+include "footer.php";
 ?>
-</body>
-</html>
   

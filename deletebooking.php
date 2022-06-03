@@ -1,19 +1,10 @@
 <?php
+include "header.php";
+include "menu.php";
+
 include "checksession.php";
 checkUser();
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria - Delete a booking</title>
-</head>
-<body>
-
-<?php
 include "config.php"; //load in any variables
 $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
 
@@ -74,29 +65,40 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
     $rowcount = mysqli_num_rows($result); 
 
 ?>
-    <!--Data for bookingdate, people, firstname, lastname is assumed from the assignment brief-->
-    <h1>Booking preview before deletion</h1>
-    <h2><a href="listbookings.php">[Return to the Bookings listing]</a><a href="index.php">[Return to the main page]</a></h2>
+<div id="body">
+    <div class="header">
+    <div>
+        <h1>Booking preview before deletion</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+        <h2><a href="listbookings.php">[Return to Bookings listing]</a><a href="index.php">[Return to main page]</a></h2>
 
-    <?php
-    //ensure we have the booking
-    if ($rowcount > 0) {
-        echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
-        $row = mysqli_fetch_assoc($result);
-        echo "<dt>Booking date & time:</dt><dd>".$row['bookingdate']."</dd>".PHP_EOL;
-        echo "<dt>Party size:</dt><dd>".$row['people']."</dd>".PHP_EOL;
-        echo "<dt>Customer:</dt><dd>".$row['lastname'].", ".$row['firstname']." (".$row['telephone'].")"."</dd></fieldset></dl>".PHP_EOL;
-    ?>
-    <form method="POST" action="deletebooking.php">
-        <h2>Are you sure you want to delete this booking?</h2>
-        <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <input type="submit" name="submit" value="Delete">
-        <a href="listbookings.php">[Cancel]</a>
-    <?php
-    } else echo "<h2>No order found!</h2>"; //Feedback
+        <?php
+        //ensure we have the booking
+        if ($rowcount > 0) {
+            echo "<fieldset><legend>Booking Detail #$id</legend><dl>";
+            $row = mysqli_fetch_assoc($result);
+            echo "<dt>Booking date & time:</dt><dd>".$row['bookingdate']."</dd>".PHP_EOL;
+            echo "<dt>Party size:</dt><dd>".$row['people']."</dd>".PHP_EOL;
+            echo "<dt>Customer:</dt><dd>".$row['lastname'].", ".$row['firstname']." (".$row['telephone'].")"."</dd></fieldset></dl>".PHP_EOL;
+        ?>
+        <form method="POST" action="deletebooking.php">
+            <h2>Are you sure you want to delete this booking?</h2>
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <input type="submit" name="submit" value="Delete">
+            <a href="listbookings.php">[Cancel]</a>
+        <?php
+        } else echo "<h2>No order found!</h2>"; //Feedback
 
- mysqli_free_result($result); //free memory from the query
- mysqli_close($DBC); //close connection
+        mysqli_free_result($result); //free memory from the query
+        mysqli_close($DBC); //close connection
+        ?>
+    </div>
+    </div>
+</div>
+
+<?php
+include "footer.php";
 ?>
-</body>
-</html>
