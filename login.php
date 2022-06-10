@@ -3,7 +3,6 @@
 //echo "<pre>"; var_dump($_POST); echo "</pre>";
 include "header.php";
 include "menu.php";
-
 include "checksession.php";
 
 //For debugging purposes, shows array of session, has been commented out
@@ -40,7 +39,7 @@ if (isset($_POST['login']) and !empty($_POST['login']) and ($_POST['login'] == '
        
 //This should be done with prepared statements!!
     if ($error == 0) {
-        $query = "SELECT customerID,password FROM customer WHERE email = '$username'";
+        $query = "SELECT customerID,password,role FROM customer WHERE email = '$username'";
         $result = mysqli_query($DBC,$query);     
         if (mysqli_num_rows($result) == 1) { //found the user
             $row = mysqli_fetch_assoc($result);
@@ -51,7 +50,7 @@ if (isset($_POST['login']) and !empty($_POST['login']) and ($_POST['login'] == '
   //this line would be used if our user password was stored as a hashed password
   //if (password_verify($password, $row['password'])) {           
     if ($password === $row['password']) //using plaintext for demonstration only!            
-        login($row['customerID'],$username);
+        login($row['customerID'],$username,$row['role']);
         } echo "<h2>Login fail</h2>".PHP_EOL;   
     } else { 
       echo "<h2>$msg</h2>".PHP_EOL;

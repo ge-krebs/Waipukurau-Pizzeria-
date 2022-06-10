@@ -57,8 +57,8 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] =
        $pizzatype = '';  
     }     
     //price    
-    if (isset($_POST['price']) and !empty($_POST['price']) and is_float($_POST['price'])) { //must have decimal
-       $price = cleanInput($_POST['price']);  
+    if (is_float(floatval($_POST['price']))) { //must have decimal
+      (float)cleanInput($_POST['price']); 
        if ($price < 5 or $price > 50 ) $price = 5;
        //ADD 
     } else {

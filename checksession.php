@@ -8,7 +8,7 @@ session_start();
 //end of overrides
 
 function isAdmin() {
-  if (($_SESSION['loggedin'] == 1) and ($_SESSION['userid'] == 1)) 
+  if (($_SESSION['role'] == 1) and ($_SESSION['userid'] == 1)) 
       return TRUE;
   else 
       return FALSE;
@@ -38,19 +38,19 @@ function loginStatus() {
 function getCustomerID(){
 checkUser();
 return $_SESSION['userid'];
-
 }
  
 //log a user in
-function login($id,$email) {
+function login($id,$email,$role) {
    //Redirect user 
    if ($_SESSION['loggedin'] == 0 and !empty($_SESSION['URI']))        
         $uri = $_SESSION['URI'];          
    else { 
-     $_SESSION['URI'] =  'http://localhost/Waipukurau-Pizzeria-BIT608/listcustomers.php'; //redirects user to customer listing once logged in        
+     $_SESSION['URI'] =  'http://localhost/Waipukurau-Pizzeria-BIT608/index.php'; //redirects user to index once logged in       
      $uri = $_SESSION['URI'];           
    }  
    
+   $_SESSION['role'] = $role;
    $_SESSION['loggedin'] = 1;        
    $_SESSION['userid'] = $id;   
    $_SESSION['email'] = $email; 

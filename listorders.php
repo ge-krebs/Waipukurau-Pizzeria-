@@ -16,7 +16,12 @@ if (mysqli_connect_errno()) {
 }
 
 //Prepare query to send to server
-$query = 'SELECT orderID,firstname,lastname,orderon FROM orders, customer WHERE orders.customerID = customer.customerID';
+
+if (!isAdmin()) {
+    $query = 'SELECT orderID,firstname,lastname,orderon FROM orders, customer WHERE orders.customerID = customer.customerID AND customer.customerID='.$_SESSION['userid'];
+} else {
+    $query = 'SELECT orderID,firstname,lastname,orderon FROM orders, customer WHERE orders.customerID = customer.customerID';
+}
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result);
 

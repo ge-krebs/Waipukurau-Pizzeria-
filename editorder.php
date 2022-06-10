@@ -1,4 +1,6 @@
 <?php
+include "header.php";
+include "menu.php";
 include "checksession.php";
 checkUser();
 ?>
@@ -22,7 +24,14 @@ checkUser();
 </head>
 <body>
     <!--Fields are not required as the customer may wish to only change one field-->
+<div id="body">
+<div class="header">
+    <div>
     <h1>Order details update</h1>
+    </div>
+  </div>
+  <div class="footer">
+  <div class="article">
     <h2><a href="listorders.php">[Return to the Orders listing]</a><a href="index.php">[Return to the main page]</a></h2>
     <h3>Pizza order for customer Admin, Admin</h3>
     <form action="">
@@ -214,5 +223,11 @@ checkUser();
         }
         flatpickr("input[type=datetime-local]", config);
     </script>
+     </div>
+    </div>
+</div>
 </body>
 </html>
+<?php 
+include "footer.php";
+?>

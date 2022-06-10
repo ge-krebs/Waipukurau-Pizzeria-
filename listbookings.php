@@ -23,10 +23,14 @@ checkUser();
         exit;
     }
     
+if (!isAdmin()) {
+    $query = 'SELECT bookingID,customerID,telephone,bookingdate,people FROM booking WHERE customerID='.$_SESSION['userid'];
+} else {
     $query = 'SELECT bookingID,customerID,telephone,bookingdate,people FROM booking';
-    $result = mysqli_query($DBC,$query);
-    $rowcount = mysqli_num_rows($result); 
-    ?>
+}
+$result = mysqli_query($DBC,$query);
+$rowcount = mysqli_num_rows($result); 
+?>
 
     <!--Data for bookingdate, people, firstname, lastname, & telephone is assumed from the assignment brief-->
 <div id="body">

@@ -66,8 +66,14 @@ if (mysqli_connect_errno()) {
     echo "Error: Unable to connect to MySQL. ".mysqli_connect_error() ;
     exit;
 }
- 
-$query = 'SELECT customerID,firstname,lastname FROM customer ORDER BY lastname';
+
+
+if (!isAdmin()) {
+  $query = 'SELECT customerID,firstname,lastname,email FROM customer WHERE customerID='.$_SESSION['userid'];
+} else {
+  $query = 'SELECT customerID,firstname,lastname FROM customer ORDER BY lastname';  
+}
+
 $result = mysqli_query($DBC,$query);
 $rowcount = mysqli_num_rows($result); 
 ?>

@@ -1,22 +1,8 @@
 <?php
+include "header.php";
+include "menu.php";
 include "checksession.php";
 checkUser();
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waipukurau Pizzeria - Edit a booking</title>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="script.js"></script>
-
-</head>
-<body>
-
-<?php
 
     include "config.php"; //Load in any variables
     $DBC = mysqli_connect("127.0.0.1", DBUSER, DBPASSWORD, DBDATABASE);
@@ -43,10 +29,17 @@ checkUser();
         exit;
         } 
     }
-    if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] == 'Add')) {
+    if (isset($_POST['submit']) and !empty($_POST['submit']) and ($_POST['submit'] == 'Update')) {
         $error = 0;
-        $msg = 'Error: ';
-        //pr($_POST);
+        $msg = 'Error';
+        
+        if (isset($_POST['id']) and !empty($_POST['id']) and is_integer(intval($_POST['id']))) {
+            $id = cleanInput($_POST['id']); 
+         } else {
+            $error++; //bump the error flag
+            $msg .= 'Invalid booking ID '; //append error message
+            $id = 0;  
+         }   
 
     if (isset($_POST['telephone']) and !empty($_POST['telephone']) and is_string($_POST['telephone'])) {
             $telephone = cleanInput($_POST['telephone']); 
@@ -74,32 +67,35 @@ checkUser();
         } 
     
     if ($error == 0 and $id > 0) {
-            $query = "UPDATE customer SET firstname=?,lastname=?,email=? WHERE customerID=?";
+            $query = "UPDATE booking SET bookingdate=?,telephone=?,people=? WHERE customerID=?";
             $stmt = mysqli_prepare($DBC,$query); //prepare the query
-            mysqli_stmt_bind_param($stmt,'sssi', $firstname, $lastname, $email,$id); 
+            mysqli_stmt_bind_param($stmt,'sssi', $bookingdate, $telephone, $people,$id); 
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);    
-            echo "<h2>customer details updated.</h2>";     
+            echo "<h2>Booking details updated.</h2>";     
         } else { 
           echo "<h2>$msg</h2>".PHP_EOL;
         }  
     }
 
 //locate booking to edit by using the bookingID
-    $query = 'SELECT * FROM booking 
-    INNER JOIN customer ON booking.customerID = customer.customerID
-    WHERE bookingid='.$id;
-    $result = mysqli_query($DBC, $query);
-    $rowcount = mysqli_num_rows($result);
-    if ($rowcount > 0) {
-        $row = mysqli_fetch_assoc($result);
-    }
-
+$id = $_GET['id'];
+$query = 'SELECT * FROM booking INNER JOIN customer ON booking.customerID = customer.customerID WHERE booking.bookingid='.$id;
+$result = mysqli_query($DBC, $query);
+$rowcount = mysqli_num_rows($result);
+if ($rowcount > 0) {
+    $row = mysqli_fetch_assoc($result);
 ?>
-
+<div id="body">
+  <div class="header">
+    <div>
     <h1>Edit a booking</h1>
-    <h2><a href="listbookings.php">[Return to the bookings listing]</a><a href="index.php">[Return to the main menu]</a></h2>
-    <h2>Booking made for</h2> <?php $row.['lastname']?>
+    </div>
+  </div>
+  <div class="footer">
+  <div class="article">
+    <h2><a href="listbookings.php">[Return to bookings listing]</a><a href="index.php">[Return to main menu]</a></h2>
+    <h2>Booking made for <?php echo $row['email'];?></h2>
     <form method ="POST" action="editbooking.php">
         <input type="hidden" name="id" value="<?php echo $id;?>">
         <p>
@@ -108,12 +104,24 @@ checkUser();
         </p>
         <p>
             <label for="telephone">Contact number:</label>
-            <input type="tel" id="telephone" name="telephone" placeholder="###-###-####" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+            <input type="tel" id="telephone" name="telephone" placeholder="###-###-####" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo $row['telephone'];?>">
         </p>
+        <p>
         <label for="people">Party size (# people, 1-10)</label>
-        <input type="number" id="people" name="people" min="1" max="10"><br><br>
-        <input type="Submit" value="Update"> 
+        <input type="number" id="people" name="people" min="1" max="10" required value="<?php echo $row['people'];?>">
+        </p>
+        <input type="submit" name="submit" value="Update"> 
         <a href="listbookings.php">[Cancel]</a>
     </form>
-</body>
-</html>
+<?php
+} else {
+    echo "<h2>Booking not found with that ID</h2>";
+}
+mysqli_close($DBC);
+?>
+ </div>
+    </div>
+</div>
+<?php 
+include "footer.php";
+?>

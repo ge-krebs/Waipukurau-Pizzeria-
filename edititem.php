@@ -1,4 +1,6 @@
 <?php
+include "header.php";
+include "menu.php";
 include "checksession.php";
 checkUser(); 
 ?>
@@ -80,37 +82,49 @@ if ($rowcount > 0) {
   $row = mysqli_fetch_assoc($result);
 
 ?>
-<h1>Food item Details Update</h1>
-<h2><a href='listitems.php'>[Return to the food item listing]</a><a href='index.php'>[Return to the main page]</a></h2>
+<div id="body">
+    <div class="header">
+    <div>
+    <h1>Food item Details Update</h1>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="article">
+      <h2><a href='listitems.php'>[Return to food item listing]</a><a href='index.php'>[Return to main page]</a></h2>
 
-<form method="POST" action="edititem.php">
-  <input type="hidden" name="id" value="<?php echo $id;?>">
-   <p>
-    <label for="pizza">Pizza name: </label>
-    <input type="text" id="pizza" name="pizza" minlength="5" maxlength="50" value="<?php echo $row['pizza']; ?>" required> 
-  </p> 
-  <p>
-    <label for="description">Description: </label>
-    <input type="text" id="description" name="description" size="100" minlength="5" maxlength="200" value="<?php echo $row['description']; ?>" required> 
-  </p>  
-  <p>  
-    <label for="pizzatype">Pizza type: </label>
-    <input type="radio" id="pizzatype" name="pizzatype" value="S" <?php echo $row['pizzatype']=='S'?'Checked':''; ?>> Standard 
-    <input type="radio" id="pizzatype" name="pizzatype" value="V" <?php echo $row['pizzatype']=='V'?'Checked':''; ?>> Vegeterian
-   </p>
-  <p>
-    <label for="price">Price $(5.0 to 50.0): </label>
-    <input type="number" id="price" name="price" min="5" max="50" value="<?php echo $row['price']; ?>" step="0.10" required> 
-  </p> 
-   <input type="submit" name="submit" value="Update">
-   <a href="listitems.php">[Cancel]</a>   
- </form>
-<?php 
-} else { 
-  echo "<h2>Food item not found with that ID</h2>"; //simple error feedback
-}
-mysqli_close($DBC); //close the connection once done
+      <form method="POST" action="edititem.php">
+        <input type="hidden" name="id" value="<?php echo $id;?>">
+        <p>
+          <label for="pizza">Pizza name: </label>
+          <input type="text" id="pizza" name="pizza" minlength="5" maxlength="50" value="<?php echo $row['pizza']; ?>" required> 
+        </p> 
+        <p>
+          <label for="description">Description: </label>
+          <input type="text" id="description" name="description" size="100" minlength="5" maxlength="200" value="<?php echo $row['description']; ?>" required> 
+        </p>  
+        <p>  
+          <label for="pizzatype">Pizza type: </label>
+          <input type="radio" id="pizzatype" name="pizzatype" value="S" <?php echo $row['pizzatype']=='S'?'Checked':''; ?>> Standard 
+          <input type="radio" id="pizzatype" name="pizzatype" value="V" <?php echo $row['pizzatype']=='V'?'Checked':''; ?>> Vegeterian
+        </p>
+        <p>
+          <label for="price">Price $(5.0 to 50.0): </label>
+          <input type="number" id="price" name="price" min="5" max="50" value="<?php echo $row['price']; ?>" step="0.10" required> 
+        </p> 
+        <input type="submit" name="submit" value="Update">
+        <a href="listitems.php">[Cancel]</a>   
+      </form>
+      <?php 
+      } else { 
+        echo "<h2>Food item not found with that ID</h2>"; //simple error feedback
+      }
+      mysqli_close($DBC); //close the connection once done
+      ?>
+  </div>
+  </div>
+</div>
+
+<?php
+include "footer.php";
 ?>
-</body>
-</html>
   
