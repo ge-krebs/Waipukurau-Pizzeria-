@@ -20,8 +20,8 @@ function checkUser() {
     if ($_SESSION['loggedin'] == 1)
        return TRUE;
     else {
-       $_SESSION['URI'] = 'http://localhost'.$_SERVER['REQUEST_URI']; //save current url for redirect     
-       header('Location: http://localhost/Waipukurau-Pizzeria-BIT608/login.php', true, 303); //redirects user to login page if not logged in
+       $_SESSION['URI'] = 'http://sql210.unaux.com'.$_SERVER['REQUEST_URI']; //save current url for redirect     
+       header('Location: http://waipukupizzeria.unaux.com/login.php', true, 303); //redirects user to login page if not logged in
     }       
 }
  
@@ -46,7 +46,7 @@ function login($id,$email,$role) {
    if ($_SESSION['loggedin'] == 0 and !empty($_SESSION['URI']))        
         $uri = $_SESSION['URI'];          
    else { 
-     $_SESSION['URI'] =  'http://localhost/Waipukurau-Pizzeria-BIT608/index.php'; //redirects user to index once logged in       
+     $_SESSION['URI'] =  'http://waipukupizzeria.unaux.com/index.php'; //redirects user to index once logged in       
      $uri = $_SESSION['URI'];           
    }  
    
@@ -64,6 +64,6 @@ function logout(){
   $_SESSION['userid'] = -1;        
   $_SESSION['email'] = '';
   $_SESSION['URI'] = '';
-  header('Location: http://localhost/Waipukurau-Pizzeria-BIT608/login.php', true, 303);    
+  header('Location: http://waipukupizzeria.unaux.com/login.php', true, 303);    
 }
 ?>
